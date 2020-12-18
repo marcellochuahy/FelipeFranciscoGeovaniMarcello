@@ -10,6 +10,8 @@
 		5F3410F7258C05510049E7D3 /* ComprasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */; };
 		5F3410F9258C11670049E7D3 /* PurchasedProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3410F8258C11670049E7D3 /* PurchasedProduct.swift */; };
 		5F341109258C13A60049E7D3 /* ComprasTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */; };
+		5F34110B258C2F580049E7D3 /* ProdutoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F34110A258C2F580049E7D3 /* ProdutoViewController.swift */; };
+		5F341112258C306A0049E7D3 /* ProdutoViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341111258C306A0049E7D3 /* ProdutoViewControllerTests.swift */; };
 		5FA5F2E0258C03A40011637A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5F2DF258C03A40011637A /* AppDelegate.swift */; };
 		5FA5F2E2258C03A40011637A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5F2E1258C03A40011637A /* SceneDelegate.swift */; };
 		5FA5F2E7258C03A40011637A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5F2E5258C03A40011637A /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 		5F3410FE258C13790049E7D3 /* ComprasUSATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComprasUSATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F341102258C13790049E7D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComprasTableViewControllerTests.swift; sourceTree = "<group>"; };
+		5F34110A258C2F580049E7D3 /* ProdutoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProdutoViewController.swift; sourceTree = "<group>"; };
+		5F341111258C306A0049E7D3 /* ProdutoViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProdutoViewControllerTests.swift; sourceTree = "<group>"; };
 		5FA5F2DC258C03A40011637A /* ComprasUSA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComprasUSA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FA5F2DF258C03A40011637A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5FA5F2E1258C03A40011637A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,9 +70,52 @@
 			isa = PBXGroup;
 			children = (
 				5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */,
+				5F341111258C306A0049E7D3 /* ProdutoViewControllerTests.swift */,
 				5F341102258C13790049E7D3 /* Info.plist */,
 			);
 			path = ComprasUSATests;
+			sourceTree = "<group>";
+		};
+		5F34110C258C2FC70049E7D3 /* Scene_1 */ = {
+			isa = PBXGroup;
+			children = (
+				5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */,
+			);
+			path = Scene_1;
+			sourceTree = "<group>";
+		};
+		5F34110D258C2FE70049E7D3 /* Scene_2 */ = {
+			isa = PBXGroup;
+			children = (
+				5F34110A258C2F580049E7D3 /* ProdutoViewController.swift */,
+			);
+			path = Scene_2;
+			sourceTree = "<group>";
+		};
+		5F34110E258C2FF00049E7D3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5F3410F8258C11670049E7D3 /* PurchasedProduct.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5F34110F258C2FFE0049E7D3 /* AppDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				5FA5F2DF258C03A40011637A /* AppDelegate.swift */,
+				5FA5F2E1258C03A40011637A /* SceneDelegate.swift */,
+			);
+			path = AppDelegates;
+			sourceTree = "<group>";
+		};
+		5F341110258C30210049E7D3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5FA5F2ED258C03A90011637A /* LaunchScreen.storyboard */,
+				5FA5F2E5258C03A40011637A /* Main.storyboard */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		5FA5F2D3258C03A40011637A = {
@@ -92,13 +139,12 @@
 		5FA5F2DE258C03A40011637A /* FelipeFranciscoGeovaniMarcello */ = {
 			isa = PBXGroup;
 			children = (
-				5FA5F2DF258C03A40011637A /* AppDelegate.swift */,
-				5FA5F2E1258C03A40011637A /* SceneDelegate.swift */,
-				5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */,
-				5F3410F8258C11670049E7D3 /* PurchasedProduct.swift */,
-				5FA5F2E5258C03A40011637A /* Main.storyboard */,
+				5F34110F258C2FFE0049E7D3 /* AppDelegates */,
+				5F34110C258C2FC70049E7D3 /* Scene_1 */,
+				5F34110D258C2FE70049E7D3 /* Scene_2 */,
+				5F34110E258C2FF00049E7D3 /* Models */,
+				5F341110258C30210049E7D3 /* Views */,
 				5FA5F2EB258C03A90011637A /* Assets.xcassets */,
-				5FA5F2ED258C03A90011637A /* LaunchScreen.storyboard */,
 				5FA5F2F0258C03A90011637A /* Info.plist */,
 				5FA5F2E8258C03A40011637A /* FelipeFranciscoGeovaniMarcello.xcdatamodeld */,
 			);
@@ -206,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F341112258C306A0049E7D3 /* ProdutoViewControllerTests.swift in Sources */,
 				5F341109258C13A60049E7D3 /* ComprasTableViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F34110B258C2F580049E7D3 /* ProdutoViewController.swift in Sources */,
 				5F3410F9258C11670049E7D3 /* PurchasedProduct.swift in Sources */,
 				5FA5F2EA258C03A40011637A /* FelipeFranciscoGeovaniMarcello.xcdatamodeld in Sources */,
 				5FA5F2E0258C03A40011637A /* AppDelegate.swift in Sources */,

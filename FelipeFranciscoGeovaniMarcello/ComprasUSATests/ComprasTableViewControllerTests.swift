@@ -26,6 +26,8 @@ class ComprasTableViewControllerTests: XCTestCase {
 		super.tearDown()
     }
 	
+	// MARK: - Tests
+	
 	func testTitle() {
 		sut.viewDidLoad()
 		XCTAssertEqual(sut.title, "Lista de Compras")
@@ -72,12 +74,11 @@ class ComprasTableViewControllerTests: XCTestCase {
 extension ComprasTableViewControllerTests {
 	
 	func appendNewPurchasedProduct() {
-		let purchasedProduct = PurchasedProduct(productName: "iPhone 12")
+		let purchasedProduct = PurchasedProduct(productName: "iPhone 12", imageName: "iPhone_12", priceInDollars: 999.99)
 		sut.purchasedProducts.append(purchasedProduct)
 	}
 	
 }
-
 
 
 

@@ -11,9 +11,15 @@ import Foundation
 struct PurchasedProduct {
 	
 	var productName: String
+	var imageName: String
+	var priceInDollars: Double
 	
-	init(productName: String) {
+	init(productName: String,
+		 imageName: String,
+		 priceInDollars: Double) {
 		self.productName = productName
+		self.imageName = imageName
+		self.priceInDollars = priceInDollars
 	}
 	
 }
