@@ -12,6 +12,7 @@
 		5F341109258C13A60049E7D3 /* ComprasTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */; };
 		5F34110B258C2F580049E7D3 /* ProdutoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F34110A258C2F580049E7D3 /* ProdutoViewController.swift */; };
 		5F341112258C306A0049E7D3 /* ProdutoViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341111258C306A0049E7D3 /* ProdutoViewControllerTests.swift */; };
+		5F341114258D08FA0049E7D3 /* StateOfUSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341113258D08FA0049E7D3 /* StateOfUSA.swift */; };
 		5FA5F2E0258C03A40011637A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5F2DF258C03A40011637A /* AppDelegate.swift */; };
 		5FA5F2E2258C03A40011637A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5F2E1258C03A40011637A /* SceneDelegate.swift */; };
 		5FA5F2E7258C03A40011637A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5F2E5258C03A40011637A /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComprasTableViewControllerTests.swift; sourceTree = "<group>"; };
 		5F34110A258C2F580049E7D3 /* ProdutoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProdutoViewController.swift; sourceTree = "<group>"; };
 		5F341111258C306A0049E7D3 /* ProdutoViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProdutoViewControllerTests.swift; sourceTree = "<group>"; };
+		5F341113258D08FA0049E7D3 /* StateOfUSA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateOfUSA.swift; sourceTree = "<group>"; };
 		5FA5F2DC258C03A40011637A /* ComprasUSA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComprasUSA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FA5F2DF258C03A40011637A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5FA5F2E1258C03A40011637A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				5F3410F8258C11670049E7D3 /* PurchasedProduct.swift */,
+				5F341113258D08FA0049E7D3 /* StateOfUSA.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				5FA5F2EA258C03A40011637A /* FelipeFranciscoGeovaniMarcello.xcdatamodeld in Sources */,
 				5FA5F2E0258C03A40011637A /* AppDelegate.swift in Sources */,
 				5FA5F2E2258C03A40011637A /* SceneDelegate.swift in Sources */,
+				5F341114258D08FA0049E7D3 /* StateOfUSA.swift in Sources */,
 				5F3410F7258C05510049E7D3 /* ComprasTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
