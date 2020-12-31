@@ -33,6 +33,9 @@ class ComprasTableViewControllerTests: XCTestCase {
 		XCTAssertEqual(sut.title, "Lista de Compras")
 	}
 	
+	/*
+	===============================================================================
+
 	func testNumberOfSections_whenPurchasedProductsIsEmpty() {
 		let numberOfSections = sut.numberOfSections(in: sut.tableView!)
 		XCTAssertEqual(numberOfSections, 0)
@@ -68,19 +71,22 @@ class ComprasTableViewControllerTests: XCTestCase {
 		XCTAssertEqual(numberOfRowsInSectionZero, 2)
 	}
 
+	===============================================================================
+	*/
+
 }
 // MARK: - Handler methods
 
 extension ComprasTableViewControllerTests {
 	
 	func appendNewPurchasedProduct() {
-		let purchasedProduct = PurchasedProduct(productName: "iPhone 12", imageName: "iPhone_12", priceInDollars: 999.99)
-		sut.purchasedProducts.append(purchasedProduct)
+		let product = MockedProduct(productName: "iPhone 12",
+									imageName: "iPhone_12",
+									priceInDollars: 999.99)
+		sut.mockedProducts.append(product as AnyObject)
 	}
 	
 }
-
-
 
 /*
 

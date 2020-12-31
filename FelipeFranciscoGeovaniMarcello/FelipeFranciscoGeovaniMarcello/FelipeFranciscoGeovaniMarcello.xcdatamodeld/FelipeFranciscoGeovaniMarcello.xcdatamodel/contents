@@ -4,14 +4,14 @@
         <attribute name="image" optional="YES" attributeType="Transformable"/>
         <attribute name="priceInDollars" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="productName" optional="YES" attributeType="String"/>
-        <relationship name="tax" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="State"/>
+        <attribute name="stateName" optional="YES" attributeType="String"/>
     </entity>
     <entity name="State" representedClassName="State" syncable="YES" codeGenerationType="class">
-        <attribute name="stateName" optional="YES" attributeType="String"/>
-        <attribute name="tax" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="stateName" attributeType="String"/>
+        <attribute name="tax" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="Product" positionX="-212.5625" positionY="-139.21875" width="128" height="103"/>
-        <element name="State" positionX="-348.89453125" positionY="-243.47265625" width="128" height="73"/>
+        <element name="State" positionX="-393.62890625" positionY="-137.296875" width="128" height="73"/>
     </elements>
 </model>

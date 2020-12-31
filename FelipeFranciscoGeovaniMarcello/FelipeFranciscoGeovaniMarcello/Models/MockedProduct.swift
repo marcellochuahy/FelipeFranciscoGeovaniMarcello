@@ -1,5 +1,5 @@
 //
-//  PurchasedProduct.swift
+//  MockedProduct.swift
 //  FelipeFranciscoGeovaniMarcello
 //
 //  Created by Marcello Chuahy on 17/12/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct PurchasedProduct {
+struct MockedProduct {
 	
 	var productName: String
 	var imageName: String

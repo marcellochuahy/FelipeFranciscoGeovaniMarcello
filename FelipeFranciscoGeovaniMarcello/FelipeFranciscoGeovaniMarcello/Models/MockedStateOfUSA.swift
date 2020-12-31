@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct StateOfUSA {
+struct MockedStateOfUSA {
 	
 	var stateName: String
 	var tax: Double

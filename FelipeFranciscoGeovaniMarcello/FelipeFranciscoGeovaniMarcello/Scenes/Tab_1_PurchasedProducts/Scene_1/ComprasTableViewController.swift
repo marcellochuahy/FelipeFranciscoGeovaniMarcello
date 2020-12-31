@@ -7,6 +7,15 @@
 //
 
 import UIKit
+import CoreData
+
+
+// ⚠️ TODO
+protocol ProductProtocol: class {
+	var productName: String { get set }
+	var imageName: String { get set }
+	var priceInDollars: Double { get set }
+}
 
 class ComprasTableViewController: UITableViewController {
 	
@@ -17,8 +26,9 @@ class ComprasTableViewController: UITableViewController {
 		label.textAlignment = .center
 		return label
 	}()
-	
-	var purchasedProducts: [PurchasedProduct] = []
+
+	var mockedProducts: [AnyObject] = []
+	var fetchedResultsController: NSFetchedResultsController<Product>!
 	
 	// MARK: - Outlets
 
@@ -26,36 +36,69 @@ class ComprasTableViewController: UITableViewController {
 	// MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		title = "Lista de Compras"
+		title = "Compras"
 		configureTableView()
+		fetchProducts()
     }
 	
 	// MARK: - Methods
 	func configureTableView() {
 		tableView.separatorStyle = .none
 	}
+	
+	func fetchProducts() {
+		
+		let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
+
+		fetchRequest.sortDescriptors = [
+			NSSortDescriptor(key: "productName", ascending: true)
+		]
+		
+		fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+															  managedObjectContext: context,
+															  sectionNameKeyPath: nil,
+															  cacheName: nil)
+		
+		fetchedResultsController.delegate = self
+		
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			print(error.localizedDescription)
+		}
+		
+	}
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-		if purchasedProducts.count == 0 {
+
+		let count = fetchedResultsController.fetchedObjects?.count ?? 0
+
+		if count == 0 {
 			tableView.backgroundView = label
 			return 0
 		} else {
 			return 1
 		}
+		
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return purchasedProducts.count
+        return fetchedResultsController.fetchedObjects?.count ?? 0
     }
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+		guard
+			let cell = tableView.dequeueReusableCell(withIdentifier: "productTableViewCell", for: indexPath) as? ProductTableViewCell,
+			let product = fetchedResultsController.fetchedObjects?[indexPath.row]
+		else {
+			return UITableViewCell()
+		}
 		
-		cell.textLabel?.text = purchasedProducts[indexPath.row].productName
-		
+		cell.setCellWith(product, andCounter: indexPath.row)
+
 		return cell
 	}
 	
@@ -112,4 +155,23 @@ class ComprasTableViewController: UITableViewController {
     }
     */
 
+}
+
+extension ComprasTableViewController: NSFetchedResultsControllerDelegate {
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+					didChange anObject: Any,
+					at indexPath: IndexPath?,
+					for type: NSFetchedResultsChangeType,
+					newIndexPath: IndexPath?) {
+		
+		switch type {
+			case .delete:
+			break
+			default:
+				tableView.reloadData()
+		}
+		
+	}
+	
 }
