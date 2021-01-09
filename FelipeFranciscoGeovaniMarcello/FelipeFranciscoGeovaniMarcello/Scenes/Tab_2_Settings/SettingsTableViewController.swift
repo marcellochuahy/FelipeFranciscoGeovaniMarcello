@@ -17,7 +17,7 @@ class SettingsTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
 
     }
 	
@@ -65,19 +65,16 @@ class SettingsTableViewController: UITableViewController {
 		let state  = states[indexPath.row].rawValue
 		let tax    = "9.99" // TODO: - ⚠️
 		
-		let cellForSectionDolar = SettingsCellModel(labelText: "Cotação do Dolar (R$):", textFieldText: "5,00")
-		let cellForSectionIOF = SettingsCellModel(labelText: "IOF:", textFieldText: "0,00", percentageLabelIsHidden: false)
-		let cellForSectionStateAndTax = SettingsCellModel(labelText: state, textFieldText: tax,    percentageLabelIsHidden: false)
+		let cellForSectionDolar       = SettingsCellModel(labelText: "Cotação do Dolar (R$):", textFieldText: "5,00")
+		let cellForSectionIOF         = SettingsCellModel(labelText: "IOF:",                   textFieldText: "0,00", percentageLabelIsHidden: false)
+		let cellForSectionStateAndTax = SettingsCellModel(labelText: state,                    textFieldText: tax,    percentageLabelIsHidden: false)
 		
 		switch SettingsSections.getSection(indexPath.section) {
-			case .dolar:
-				cell.configure(withSettingsCellModel: cellForSectionDolar)
-			case .iof:
-				cell.configure(withSettingsCellModel: cellForSectionIOF)
-			case .stateAndTax:
-				cell.configure(withSettingsCellModel: cellForSectionStateAndTax)
+			case .dolar:       cell.configure(withSettingsCellModel: cellForSectionDolar)
+			case .iof:         cell.configure(withSettingsCellModel: cellForSectionIOF)
+			case .stateAndTax: cell.configure(withSettingsCellModel: cellForSectionStateAndTax)
 		}
-		
+
 		return cell
 
     }
@@ -91,7 +88,7 @@ class SettingsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -101,7 +98,7 @@ class SettingsTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.

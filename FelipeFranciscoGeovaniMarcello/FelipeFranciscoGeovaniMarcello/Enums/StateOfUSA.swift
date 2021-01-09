@@ -59,5 +59,4 @@ enum StateOfUSA: String, CaseIterable {
 	case wisconsin = "Wisconsin"
 	case wyoming = "Wyoming"
 	
-	
 }
