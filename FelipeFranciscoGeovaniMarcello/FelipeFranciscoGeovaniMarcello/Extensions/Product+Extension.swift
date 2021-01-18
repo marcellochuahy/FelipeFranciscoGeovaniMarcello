@@ -6,6 +6,8 @@
 //  Copyright © 2020 Applause Codes. All rights reserved.
 //
 
+/*
+
 import Foundation
 
 extension Product {
@@ -22,3 +24,5 @@ extension Product {
 		
 	}
 }
+
+*/

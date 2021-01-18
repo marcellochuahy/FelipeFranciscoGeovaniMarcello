@@ -29,7 +29,7 @@ class ProductTableViewCell: UITableViewCell {
     }
 	
 	func setCellWith(_ product: Product, andCounter counter: Int) {
-		productImageView.image = UIImage(named: "placeholderImage")
+		productImageView.image = product.image as? UIImage ?? UIImage(named: "placeholderImage")
 		productName.text = product.productName
 		priceInDollars.text = "US$ \(product.priceInDollars)" // ⚠️ TODO
 		priceInReais.text = "R$ \(product.priceInDollars * currencyExchangeRate)" // ⚠️ TODO

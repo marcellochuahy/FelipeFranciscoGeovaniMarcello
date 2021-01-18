@@ -158,7 +158,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <state key="normal" image="plus.circle" catalog="system"/>
                                 <connections>
-                                    <segue destination="9V6-Jv-7cO" kind="presentation" id="eWN-ep-8Sl"/>
+                                    <segue destination="lB5-0e-Ovq" kind="presentation" id="eWN-ep-8Sl"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Preço em doláres" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ape-Xb-AqR">
@@ -271,9 +271,9 @@
                         <outlet property="paymentWithCreditCardSwitch" destination="l2O-eg-Kin" id="H6n-vf-pkA"/>
                         <outlet property="pickerView" destination="bBZ-wn-6pu" id="bNd-kV-EAd"/>
                         <outlet property="pickerViewBottomConstraint" destination="0VO-Wb-tPc" id="Fic-Uw-o8a"/>
-                        <outlet property="placeholderImage" destination="ghv-JL-Zkq" id="L8R-eN-NTF"/>
                         <outlet property="priceInDollarsTextField" destination="ape-Xb-AqR" id="BUe-Cb-zzA"/>
                         <outlet property="productNameTextField" destination="4L8-TO-P2x" id="flh-Fg-NCT"/>
+                        <outlet property="productOrPlaceholderImage" destination="ghv-JL-Zkq" id="L8R-eN-NTF"/>
                         <outlet property="stateOfUsaTextField" destination="92U-uq-YfP" id="TcT-3Z-8cb"/>
                     </connections>
                 </viewController>
@@ -312,7 +312,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="38o-fQ-PaW" kind="relationship" relationship="viewControllers" id="d8V-9j-Prm"/>
-                        <segue destination="9V6-Jv-7cO" kind="relationship" relationship="viewControllers" id="u7I-8r-1Ob"/>
+                        <segue destination="lB5-0e-Ovq" kind="relationship" relationship="viewControllers" id="u7I-8r-1Ob"/>
                         <segue destination="ucc-kU-KEA" kind="relationship" relationship="viewControllers" id="gCg-Pg-eU1"/>
                     </connections>
                 </tabBarController>
@@ -379,11 +379,61 @@
                             <outlet property="delegate" destination="9V6-Jv-7cO" id="Jj1-xP-nTb"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Ajustes" image="settings" id="epT-fH-Zx0"/>
+                    <navigationItem key="navigationItem" title="Ajustes" id="y2g-tG-rvC"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oqa-og-1Mn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4686" y="46"/>
+            <point key="canvasLocation" x="5595.652173913044" y="45.535714285714285"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="kzg-zf-xyc">
+            <objects>
+                <viewController id="Efu-cy-3pL" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7mk-SM-adk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cotação do dólar (R$):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Cb-42-l2m">
+                                <rect key="frame" x="20" y="44" width="174" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="IOF (%):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ab-UK-2Wc">
+                                <rect key="frame" x="64" y="178" width="62" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4oz-xQ-caA">
+                                <rect key="frame" x="211" y="178" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Impostos por estado" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Da-JP-66i">
+                                <rect key="frame" x="105" y="258" width="169" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-3O-nCk">
+                                <rect key="frame" x="297" y="44" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="znN-R6-bHg"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8iL-3n-bRb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5614" y="777"/>
         </scene>
         <!--Total da Compra-->
         <scene sceneID="icx-Y0-NWe">
@@ -399,7 +449,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O8R-Ey-5xy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5942" y="46"/>
+            <point key="canvasLocation" x="6850.7246376811599" y="45.535714285714285"/>
+        </scene>
+        <!--Ajustes-->
+        <scene sceneID="b0T-6u-k3Q">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lB5-0e-Ovq" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Ajustes" image="settings" id="epT-fH-Zx0"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="o1S-XL-Z2s">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9V6-Jv-7cO" kind="relationship" relationship="rootViewController" id="75l-np-Bgg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ko8-yA-216" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4685.507246376812" y="45.535714285714285"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F1D6F8025B4FC1F00B68A83 /* StatesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1D6F7F25B4FC1F00B68A83 /* StatesManager.swift */; };
 		5F3410F7258C05510049E7D3 /* ComprasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */; };
 		5F3410F9258C11670049E7D3 /* MockedProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3410F8258C11670049E7D3 /* MockedProduct.swift */; };
 		5F341109258C13A60049E7D3 /* ComprasTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5F1D6F7F25B4FC1F00B68A83 /* StatesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesManager.swift; sourceTree = "<group>"; };
 		5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComprasTableViewController.swift; sourceTree = "<group>"; };
 		5F3410F8258C11670049E7D3 /* MockedProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedProduct.swift; sourceTree = "<group>"; };
 		5F3410FE258C13790049E7D3 /* ComprasUSATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComprasUSATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F1D6F7E25B4FA7100B68A83 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				5F1D6F7F25B4FC1F00B68A83 /* StatesManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		5F3410FF258C13790049E7D3 /* ComprasUSATests */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +196,7 @@
 				5FC8CF19259DF76F009A90CC /* Scenes */,
 				5F34110E258C2FF00049E7D3 /* Models */,
 				5F427BB2258D6754007DB593 /* Enums */,
+				5F1D6F7E25B4FA7100B68A83 /* Manager */,
 				5F427BAF258D5F50007DB593 /* Extensions */,
 				5FA5F2EB258C03A90011637A /* Assets.xcassets */,
 				5FA5F2F0258C03A90011637A /* Info.plist */,
@@ -344,6 +355,7 @@
 				5F427BB1258D66C1007DB593 /* StateOfUSA.swift in Sources */,
 				5F34110B258C2F580049E7D3 /* ProdutoViewController.swift in Sources */,
 				5F3410F9258C11670049E7D3 /* MockedProduct.swift in Sources */,
+				5F1D6F8025B4FC1F00B68A83 /* StatesManager.swift in Sources */,
 				5F427BB8258F8B28007DB593 /* Product+Extension.swift in Sources */,
 				5FA5F2EA258C03A40011637A /* FelipeFranciscoGeovaniMarcello.xcdatamodeld in Sources */,
 				5F427BB6258F83AE007DB593 /* State+Extension.swift in Sources */,

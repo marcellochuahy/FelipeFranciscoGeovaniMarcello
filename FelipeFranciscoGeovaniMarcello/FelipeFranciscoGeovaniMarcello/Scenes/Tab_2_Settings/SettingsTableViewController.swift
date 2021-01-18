@@ -9,22 +9,32 @@
 import UIKit
 
 class SettingsTableViewController: UITableViewController {
+	
+	var statesManager = StatesManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		getStates()
+	
+		tableView.separatorStyle = .none
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // TODO -  ocultar se modally
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(fechar))
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-
     }
 	
+	func getStates() {
+		statesManager.getStates(withContext: context)
+		tableView.reloadData()
+	}
 	
+	@objc
+	func fechar() {
+		self.dismiss(animated: true, completion: nil)
+	}
 
     // MARK: - Table view data source
-	
 	
 	enum SettingsSections: CaseIterable {
 		
@@ -42,18 +52,41 @@ class SettingsTableViewController: UITableViewController {
     }
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		
 		switch SettingsSections.getSection(section) {
-			case .dolar:       return "Dólar"
-			case .iof:         return "IOF"
+			case .dolar:       return nil //"Dólar"
+			case .iof:         return nil // "IOF"
 			case .stateAndTax: return "Estados e Impostos"
 		}
+
+	}
+	
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		
+		let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 44))
+		headerView.backgroundColor = .red
+		
+		let label = UILabel()
+		label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width - 10, height: headerView.frame.height - 10)
+		label.text = "Notification Times"
+		label.backgroundColor = .green
+		//label.font = UIFont().futuraPTMediumFont(16) // my custom font
+		//label.textColor = UIColor.charcolBlackColour() // my custom colour
+		
+		headerView.addSubview(label)
+		
+		return headerView
+	}
+	
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 44
 	}
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch SettingsSections.getSection(section) {
 			case .dolar:       return 1
 			case .iof:         return 1
-			case .stateAndTax: return StateOfUSA.allCases.count
+			case .stateAndTax: return statesManager.states.count
 		}
     }
 
@@ -61,35 +94,57 @@ class SettingsTableViewController: UITableViewController {
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as! SettingsTableViewCell
 	
-		let states = StateOfUSA.allCases
-		let state  = states[indexPath.row].rawValue
-		let tax    = "9.99" // TODO: - ⚠️
-		
-		let cellForSectionDolar       = SettingsCellModel(labelText: "Cotação do Dolar (R$):", textFieldText: "5,00")
-		let cellForSectionIOF         = SettingsCellModel(labelText: "IOF:",                   textFieldText: "0,00", percentageLabelIsHidden: false)
-		let cellForSectionStateAndTax = SettingsCellModel(labelText: state,                    textFieldText: tax,    percentageLabelIsHidden: false)
-		
+		// let states = StateOfUSA.allCases
+		// let state  = states[indexPath.row].rawValue
+		// let tax    = "9.99" // TODO: - ⚠️
+
 		switch SettingsSections.getSection(indexPath.section) {
-			case .dolar:       cell.configure(withSettingsCellModel: cellForSectionDolar)
-			case .iof:         cell.configure(withSettingsCellModel: cellForSectionIOF)
-			case .stateAndTax: cell.configure(withSettingsCellModel: cellForSectionStateAndTax)
+			case .dolar:
+				
+				let cellForSectionDolar = SettingsCellModel(labelText: "Cotação do Dolar (R$):",
+															textFieldText: "5,00")
+				
+				cell.configure(withSettingsCellModel: cellForSectionDolar)
+			
+			case .iof:
+				
+				let cellForSectionIOF = SettingsCellModel(labelText: "IOF:",
+														  textFieldText: "0,00",
+														  percentageLabelIsHidden: false)
+				
+				cell.configure(withSettingsCellModel: cellForSectionIOF)
+			
+			case .stateAndTax:
+				
+				let state = statesManager.states[indexPath.row].stateName ?? ""
+				let tax   = String(statesManager.states[indexPath.row].tax)
+				
+				let cellForSectionStateAndTax = SettingsCellModel(labelText: state,
+																  textFieldText: tax,
+																  percentageLabelIsHidden: false)
+				
+				cell.configure(withSettingsCellModel: cellForSectionStateAndTax)
+			
+			
+			tableView.backgroundView = label
+			
+			
+			
+			
 		}
 
 		return cell
 
     }
 
-
-    /*
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+		switch SettingsSections.getSection(indexPath.section) {
+			case .dolar:       return false
+			case .iof:         return false
+			case .stateAndTax: return true
+		}
     }
-    */
 
-    
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source

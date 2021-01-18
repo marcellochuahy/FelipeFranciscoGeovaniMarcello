@@ -41,7 +41,7 @@ class ProdutoViewController: UIViewController {
 	@IBOutlet weak var productNameTextField: UITextField!
 	@IBOutlet weak var stateOfUsaTextField: UITextField!
 	@IBOutlet weak var priceInDollarsTextField: UITextField!
-	@IBOutlet weak var placeholderImage: UIImageView!
+	@IBOutlet weak var productOrPlaceholderImage: UIImageView!
 	@IBOutlet weak var imageButton: UIButton!
 	@IBOutlet weak var paymentWithCreditCardSwitch: UISwitch!
 	@IBOutlet weak var cadastrarButton: UIButton!
@@ -51,13 +51,15 @@ class ProdutoViewController: UIViewController {
 	
 	// MARK: - Properties
 	var product: Product!
-	var selectedState: StateOfUSA?
+	//var selectedState: StateOfUSA?
 	let pickerViewBottomConstraintConstant: CGFloat = -260
 
 	// MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+		
 		title = "Cadastrar Produto"
+
 		setupProductNameTextField()
 		setupPriceInDollarsTextField()
 		setupCadastrarButton()
@@ -169,13 +171,20 @@ class ProdutoViewController: UIViewController {
 
     // MARK: - Actions
 	@IBAction func imageButtonWasTapped(_ sender: UIButton) {
-		// TODO: - ⚠️
-		// Ao clicar na imagem de presente, o usuário poderá escolher se deseja inserir a foto do produto através da Biblioteca de fotos ou da Câmera, só mostrando câmera caso ela exista no device.
+		showAlertControllerAsActionSheet(viewController: self)
 	}
 	
 	@IBAction func okPickerBarButtonItemWasTapped(_ sender: UIBarButtonItem) {
 		hideBluredViewWithPicker()
 	}
+	
+	
+
+		
+		
+
+	
+
 	
 	
 //	@IBAction func addButtonWasTapped(_ sender: UIButton) {
@@ -200,11 +209,13 @@ class ProdutoViewController: UIViewController {
 	// MARK: - Handler Methods
 	private func addNewProduct() {
 		
-		let isProductImageSelected = placeholderImage.image != UIImage(named: "placeholderImage")
+		let isProductImageSelected = productOrPlaceholderImage.image != UIImage(named: "placeholderImage")
 		
 		if productNameTextField.text?.isEmpty ?? true    { return showAlert(forRequiredData: .productNameTextField) }
         
-		guard let selectedState = selectedState else     { return showAlert(forRequiredData: .stateOfUSATextField) }
+		
+		// TODO
+//		guard let selectedState = selectedState else     { return showAlert(forRequiredData: .stateOfUSATextField) }
 		
 		if priceInDollarsTextField.text?.isEmpty ?? true { return showAlert(forRequiredData: .priceinDollarsTextField) }
 
@@ -216,7 +227,11 @@ class ProdutoViewController: UIViewController {
 		product = Product(context: context)
 
 		product.productName = productNameTextField.text
-		product.state = selectedState
+		product.image = productOrPlaceholderImage.image
+		
+		// ⚠️ TODO
+		product.state = product.state // ⚠️ TODO selectedState
+		
 		let priceinDollars = priceInDollarsTextField.text ?? ""
 		product.priceInDollars = Double(priceinDollars) ?? 0.00
 		
@@ -299,10 +314,19 @@ extension ProdutoViewController: UITextFieldDelegate {
 			default:
 			print("DEFAULT")
 		}
-		
-		
-		
+
 	}
+	
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		if
+		!(productNameTextField.text?.isEmpty    ?? true) &&
+		!(stateOfUsaTextField.text?.isEmpty     ?? true) &&
+		!(priceInDollarsTextField.text?.isEmpty ?? true) {
+			cadastrarButton.backgroundColor = .systemBlue
+		}
+	}
+	
+	
 }
 
 // MARK: - UIPickerViewDataSource, UIPickerViewDelegate
@@ -322,9 +346,16 @@ extension ProdutoViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		
+		// TODO
+		
+		/*
 		let states = StateOfUSA.allCases
 		selectedState = states[row]
 		stateOfUsaTextField.text = selectedState?.rawValue
+        */
+
+
 	}
 	
 }
@@ -359,4 +390,96 @@ extension ProdutoViewController {
 		)
 	}
 	
+}
+
+//extension ProdutoViewController: UIImagePickerControllerDelegate,
+//                                 UINavigationControllerDelegate {
+//
+//	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//
+//		guard let image = info[.editedImage] as? UIImage else { return }
+//
+//
+//		let imageNameAsUniversallyUniqueIdentifier = UUID().uuidString
+//		let imagePath = getDocumentsDirectory().appendingPathComponent(imageNameAsUniversallyUniqueIdentifier)
+//
+//		if let jpegData = image.jpegData(compressionQuality: 0.8) {
+//			try? jpegData.write(to: imagePath)
+//		}
+//
+//		dismiss(animated: true)
+//	}
+//
+//	func getDocumentsDirectory() -> URL {
+//		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//		return paths[0]
+//	}
+//
+//}
+
+extension ProdutoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+	
+	func showAlertControllerAsActionSheet(viewController: UIViewController) {
+		
+		let alertControllerAsActionSheet = UIAlertController(title: "Selecionar foto",
+															 message: "De onde você quer escolher a foto",
+															 preferredStyle: .actionSheet)
+		
+		if UIImagePickerController.isSourceTypeAvailable(.camera) {
+			let cameraAction = UIAlertAction(title: "Câmera", style: .default, handler: { (action: UIAlertAction) in
+				self.getImage(fromSourceType: .camera)
+			})
+			alertControllerAsActionSheet.addAction(cameraAction)
+		}
+		
+		let photoLibraryAction = UIAlertAction(title: "Biblioteca de fotos", style: .default) { (action: UIAlertAction) in
+			self.getImage(fromSourceType: .photoLibrary)
+		}
+		alertControllerAsActionSheet.addAction(photoLibraryAction)
+		
+		let savedPhotosAlbumAction = UIAlertAction(title: "Álbum de fotos", style: .default) { (action: UIAlertAction) in
+			self.getImage(fromSourceType: .savedPhotosAlbum)
+		}
+		alertControllerAsActionSheet.addAction(savedPhotosAlbumAction)
+		
+		let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+		alertControllerAsActionSheet.addAction(cancelAction)
+		
+		present(alertControllerAsActionSheet, animated: true, completion: nil)
+		
+	}
+	
+	func getImage(fromSourceType sourceType: UIImagePickerController.SourceType) {
+		let imagePickerController = UIImagePickerController()
+		imagePickerController.sourceType = sourceType
+		imagePickerController.delegate = self
+		present(imagePickerController, animated: true, completion: nil)
+	}
+	
+	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+		dismiss(animated: true, completion: nil)
+	}
+	
+//	func imagePickerController(_ picker: UIImagePickerController,
+//							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//		if let image = info[.originalImage] as? UIImage {
+//			// TODO
+//		} else {
+//			print("Something went wrong")
+//		}
+//	}
+	
+	func imagePickerController(_ picker: UIImagePickerController,
+							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		
+		let image = info[.originalImage] as? UIImage
+		
+		productOrPlaceholderImage.image = image
+		
+		dismiss(animated: true, completion: nil)
+		
+	}
+	
+	
+
 }
