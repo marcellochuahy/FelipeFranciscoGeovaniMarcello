@@ -13,15 +13,18 @@ struct SettingsCellModel {
 	let labelText: String
 	let textFieldText: String
 	let percentageLabelIsHidden: Bool
+	let kindOfSettingsData: KindOfSettingsData
 	
 	init(
 		labelText: String,
 		textFieldText: String,
-		percentageLabelIsHidden: Bool = true
+		percentageLabelIsHidden: Bool = true,
+		kindOfSettingsData: KindOfSettingsData
 	) {
 		self.labelText = labelText
 		self.textFieldText = textFieldText
 		self.percentageLabelIsHidden = percentageLabelIsHidden
+		self.kindOfSettingsData = kindOfSettingsData
 	}
 	
 }

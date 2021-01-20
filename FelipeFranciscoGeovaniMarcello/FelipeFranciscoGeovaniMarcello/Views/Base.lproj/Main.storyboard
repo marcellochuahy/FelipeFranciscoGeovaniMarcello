@@ -93,6 +93,7 @@
                                     <outlet property="productCounter" destination="so5-DY-tqe" id="pj0-JS-aSZ"/>
                                     <outlet property="productImageView" destination="Yuh-Qs-CC2" id="gZm-3C-m59"/>
                                     <outlet property="productName" destination="4Nc-z6-UyC" id="Dzj-hX-ehu"/>
+                                    <segue destination="KWi-VU-JTR" kind="show" identifier="editProductSegue" id="YCu-uW-G7S"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -104,8 +105,7 @@
                     <navigationItem key="navigationItem" id="bAM-jJ-Fcz">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="6fp-55-WHZ">
                             <connections>
-                                <action selector="addButtonWasTapped:" destination="Bjs-Ab-ycE" id="lUz-tQ-dMl"/>
-                                <segue destination="KWi-VU-JTR" kind="show" id="IIZ-cZ-Yry"/>
+                                <segue destination="KWi-VU-JTR" kind="show" identifier="addProductSegue" id="IIZ-cZ-Yry"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -158,7 +158,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <state key="normal" image="plus.circle" catalog="system"/>
                                 <connections>
-                                    <segue destination="lB5-0e-Ovq" kind="presentation" id="eWN-ep-8Sl"/>
+                                    <segue destination="lB5-0e-Ovq" kind="presentation" identifier="addStateSegue" id="eWN-ep-8Sl"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Preço em doláres" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ape-Xb-AqR">
@@ -178,7 +178,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Xzr-Cq-mct"/>
                                 </constraints>
-                                <state key="normal" title="CADASTRAR">
+                                <state key="normal">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -187,21 +187,21 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="cadastrarButtonWasTapped:" destination="KWi-VU-JTR" eventType="touchUpInside" id="noi-Nt-15X"/>
+                                    <action selector="addOrEditButtonWasTapped:" destination="KWi-VU-JTR" eventType="touchUpInside" id="noi-Nt-15X"/>
                                 </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l2O-eg-Kin">
                                 <rect key="frame" x="349" y="448.5" width="51" height="31"/>
                             </switch>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ICz-T1-GLz">
-                                <rect key="frame" x="0.0" y="624" width="414" height="189"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ICz-T1-GLz">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <subviews>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LkY-cL-7DU">
                                         <rect key="frame" x="0.0" y="725" width="414" height="44"/>
                                         <items>
                                             <barButtonItem title="ok" id="ocu-Up-jwa">
                                                 <connections>
-                                                    <action selector="okPickerBarButtonItemWasTapped:" destination="KWi-VU-JTR" id="1g3-bK-UBv"/>
+                                                    <action selector="americanStatePickerOKBarButtonItemWasTapped:" destination="KWi-VU-JTR" id="A70-4m-bdz"/>
                                                 </connections>
                                             </barButtonItem>
                                         </items>
@@ -265,12 +265,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="lb0-cx-6Ma"/>
                     <connections>
-                        <outlet property="bluredViewWithPicker" destination="ICz-T1-GLz" id="qkf-Jd-Mrw"/>
-                        <outlet property="cadastrarButton" destination="ngq-U3-ug7" id="bGe-Rs-Vn3"/>
+                        <outlet property="addOrEditButton" destination="ngq-U3-ug7" id="bGe-Rs-Vn3"/>
+                        <outlet property="americanStatePickerView" destination="bBZ-wn-6pu" id="bNd-kV-EAd"/>
+                        <outlet property="americanStatePickerViewBottomConstraint" destination="0VO-Wb-tPc" id="Fic-Uw-o8a"/>
                         <outlet property="imageButton" destination="IN9-oi-nol" id="Ooe-lQ-Xb9"/>
+                        <outlet property="parentViewWithAmericanStatePicker" destination="ICz-T1-GLz" id="qkf-Jd-Mrw"/>
                         <outlet property="paymentWithCreditCardSwitch" destination="l2O-eg-Kin" id="H6n-vf-pkA"/>
-                        <outlet property="pickerView" destination="bBZ-wn-6pu" id="bNd-kV-EAd"/>
-                        <outlet property="pickerViewBottomConstraint" destination="0VO-Wb-tPc" id="Fic-Uw-o8a"/>
                         <outlet property="priceInDollarsTextField" destination="ape-Xb-AqR" id="BUe-Cb-zzA"/>
                         <outlet property="productNameTextField" destination="4L8-TO-P2x" id="flh-Fg-NCT"/>
                         <outlet property="productOrPlaceholderImage" destination="ghv-JL-Zkq" id="L8R-eN-NTF"/>
@@ -385,56 +385,6 @@
             </objects>
             <point key="canvasLocation" x="5595.652173913044" y="45.535714285714285"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="kzg-zf-xyc">
-            <objects>
-                <viewController id="Efu-cy-3pL" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="7mk-SM-adk">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cotação do dólar (R$):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Cb-42-l2m">
-                                <rect key="frame" x="20" y="44" width="174" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="IOF (%):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ab-UK-2Wc">
-                                <rect key="frame" x="64" y="178" width="62" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4oz-xQ-caA">
-                                <rect key="frame" x="211" y="178" width="97" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Impostos por estado" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Da-JP-66i">
-                                <rect key="frame" x="105" y="258" width="169" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-3O-nCk">
-                                <rect key="frame" x="297" y="44" width="97" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="znN-R6-bHg"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8iL-3n-bRb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5614" y="777"/>
-        </scene>
         <!--Total da Compra-->
         <scene sceneID="icx-Y0-NWe">
             <objects>
@@ -473,6 +423,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="eWN-ep-8Sl"/>
+        <segue reference="YCu-uW-G7S"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="placeholderImage" width="343" height="203.5"/>

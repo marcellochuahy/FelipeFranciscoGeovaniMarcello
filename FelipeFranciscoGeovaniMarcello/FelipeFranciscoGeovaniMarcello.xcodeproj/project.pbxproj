@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5F1D6F8025B4FC1F00B68A83 /* StatesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1D6F7F25B4FC1F00B68A83 /* StatesManager.swift */; };
+		5F1D6F8225B5199700B68A83 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1D6F8125B5199700B68A83 /* Calculator.swift */; };
+		5F1D6F8425B51EEF00B68A83 /* UIViewController+Calculator.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1D6F8325B51EEF00B68A83 /* UIViewController+Calculator.swift.swift */; };
+		5F2992FA25B8D1E300738A5F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2992F925B8D1E200738A5F /* String+Extension.swift */; };
 		5F3410F7258C05510049E7D3 /* ComprasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */; };
 		5F3410F9258C11670049E7D3 /* MockedProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3410F8258C11670049E7D3 /* MockedProduct.swift */; };
 		5F341109258C13A60049E7D3 /* ComprasTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F341108258C13A60049E7D3 /* ComprasTableViewControllerTests.swift */; };
@@ -43,6 +46,9 @@
 
 /* Begin PBXFileReference section */
 		5F1D6F7F25B4FC1F00B68A83 /* StatesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesManager.swift; sourceTree = "<group>"; };
+		5F1D6F8125B5199700B68A83 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		5F1D6F8325B51EEF00B68A83 /* UIViewController+Calculator.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Calculator.swift.swift"; sourceTree = "<group>"; };
+		5F2992F925B8D1E200738A5F /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		5F3410F6258C05510049E7D3 /* ComprasTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComprasTableViewController.swift; sourceTree = "<group>"; };
 		5F3410F8258C11670049E7D3 /* MockedProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedProduct.swift; sourceTree = "<group>"; };
 		5F3410FE258C13790049E7D3 /* ComprasUSATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComprasUSATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +133,7 @@
 		5F34110E258C2FF00049E7D3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5F1D6F8125B5199700B68A83 /* Calculator.swift */,
 				5F3410F8258C11670049E7D3 /* MockedProduct.swift */,
 				5F341113258D08FA0049E7D3 /* MockedStateOfUSA.swift */,
 			);
@@ -155,8 +162,10 @@
 			isa = PBXGroup;
 			children = (
 				5F427BAD258D5F45007DB593 /* UIViewController+CoreData.swift */,
+				5F1D6F8325B51EEF00B68A83 /* UIViewController+Calculator.swift.swift */,
 				5F427BB5258F83AE007DB593 /* State+Extension.swift */,
 				5F427BB7258F8B28007DB593 /* Product+Extension.swift */,
+				5F2992F925B8D1E200738A5F /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -357,7 +366,10 @@
 				5F3410F9258C11670049E7D3 /* MockedProduct.swift in Sources */,
 				5F1D6F8025B4FC1F00B68A83 /* StatesManager.swift in Sources */,
 				5F427BB8258F8B28007DB593 /* Product+Extension.swift in Sources */,
+				5F1D6F8225B5199700B68A83 /* Calculator.swift in Sources */,
+				5F1D6F8425B51EEF00B68A83 /* UIViewController+Calculator.swift.swift in Sources */,
 				5FA5F2EA258C03A40011637A /* FelipeFranciscoGeovaniMarcello.xcdatamodeld in Sources */,
+				5F2992FA25B8D1E300738A5F /* String+Extension.swift in Sources */,
 				5F427BB6258F83AE007DB593 /* State+Extension.swift in Sources */,
 				5FA2A879259E2B0E00320251 /* SettingsTableViewController.swift in Sources */,
 				5FA5F2E0258C03A40011637A /* AppDelegate.swift in Sources */,

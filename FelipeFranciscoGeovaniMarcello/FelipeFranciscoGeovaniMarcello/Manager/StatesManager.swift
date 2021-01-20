@@ -17,9 +17,12 @@ class StatesManager {
 	private init() { }
 	
 	func getStates(withContext context: NSManagedObjectContext) {
+		
 		let fetchRequest: NSFetchRequest<State> = State.fetchRequest()
 		let sortDescriptor = NSSortDescriptor(key: "stateName", ascending: true)
+		
 		fetchRequest.sortDescriptors = [sortDescriptor]
+		
 		do {
 			states = try context.fetch(fetchRequest)
 		} catch {
@@ -28,13 +31,16 @@ class StatesManager {
 	}
 	
 	func deleteState(at index: Int, context: NSManagedObjectContext) {
+		
 		let stateToBeDeleted = states[index]
 		context.delete(stateToBeDeleted)
+		
 		do {
 			try context.save()
 		} catch {
 			print(error.localizedDescription)
 		}
+		
 	}
 	
 }

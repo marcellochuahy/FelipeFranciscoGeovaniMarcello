@@ -10,7 +10,7 @@ import UIKit
 
 class ProductTableViewCell: UITableViewCell {
 	
-	let currencyExchangeRate = 5.00 // ⚠️ TODO
+	let userDefaults = UserDefaults.standard
 
 	@IBOutlet weak var productImageView: UIImageView!
 	@IBOutlet weak var productName: UILabel!
@@ -20,20 +20,32 @@ class ProductTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
     }
 	
 	func setCellWith(_ product: Product, andCounter counter: Int) {
+		
+		let priceInDollarsAsDouble = product.priceInDollars
+		let americanDollarExchangeRate = userDefaults.double(forKey: "AmericanDollarExchangeRate")
+		let priceInRealBrasileiroAsDouble = priceInDollarsAsDouble * americanDollarExchangeRate
+	
+		let formattedPriceAsDollar = calculator.convertDoubleToCurrency(double: priceInDollarsAsDouble,
+																		withLocale: .enUS,
+																		returningStringWithCurrencySymbol: true)
+		
+		let formattedPriceAsRealBrasileiro = calculator.convertDoubleToCurrency(double: priceInRealBrasileiroAsDouble,
+																				withLocale: .ptBR,
+																				returningStringWithCurrencySymbol: true)
+		
 		productImageView.image = product.image as? UIImage ?? UIImage(named: "placeholderImage")
-		productName.text = product.productName
-		priceInDollars.text = "US$ \(product.priceInDollars)" // ⚠️ TODO
-		priceInReais.text = "R$ \(product.priceInDollars * currencyExchangeRate)" // ⚠️ TODO
-		productCounter.text = "#\(counter + 1)"
+		productName.text       = product.productName
+		priceInDollars.text    = formattedPriceAsDollar
+		priceInReais.text      = formattedPriceAsRealBrasileiro
+		productCounter.text    = "#\(counter + 1)"
+		
 	}
 
 }

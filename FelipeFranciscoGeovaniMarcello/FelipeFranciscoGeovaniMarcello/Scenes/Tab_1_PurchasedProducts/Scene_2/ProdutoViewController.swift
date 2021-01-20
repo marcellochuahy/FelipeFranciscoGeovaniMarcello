@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 enum RequiredDataForProdutoViewController {
 	
@@ -44,29 +45,41 @@ class ProdutoViewController: UIViewController {
 	@IBOutlet weak var productOrPlaceholderImage: UIImageView!
 	@IBOutlet weak var imageButton: UIButton!
 	@IBOutlet weak var paymentWithCreditCardSwitch: UISwitch!
-	@IBOutlet weak var cadastrarButton: UIButton!
-	@IBOutlet weak var bluredViewWithPicker: UIView!
-	@IBOutlet weak var pickerView: UIPickerView!
-	@IBOutlet weak var pickerViewBottomConstraint: NSLayoutConstraint!
+	@IBOutlet weak var addOrEditButton: UIButton!
+	
+	@IBOutlet weak var parentViewWithAmericanStatePicker: UIView!
+	@IBOutlet weak var americanStatePickerView: UIPickerView!
+	@IBOutlet weak var americanStatePickerViewBottomConstraint: NSLayoutConstraint!
 	
 	// MARK: - Properties
-	var product: Product!
-	//var selectedState: StateOfUSA?
+	
+	let statesManager = StatesManager.shared
+	let userDefaults = UserDefaults.standard
+	
+	var product: Product?
+	var state: State?
 	let pickerViewBottomConstraintConstant: CGFloat = -260
 
 	// MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		title = "Cadastrar Produto"
 
+		setTitleAndButton()
 		setupProductNameTextField()
-		setupPriceInDollarsTextField()
-		setupCadastrarButton()
 		setupStateOfUSATextField()
+		setupPriceInDollarsTextField()
+		setupAddOrEditButton()
 		setupPickerView()
+
+		loadProductDataIfProductIsNotNil()
+		
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		statesManager.getStates(withContext: context)
+	}
+
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		hideBluredViewWithPicker()
 		view.endEditing(true)
@@ -74,27 +87,19 @@ class ProdutoViewController: UIViewController {
 	
 	// MARK: - Methods
 	
-	func getKeyboardBackgroundColor(forTextField textField: UITextField) -> UIColor {
-		let gray = UIColor(red: 214/255, green: 216/255, blue: 221/255, alpha: 1)
-		var backgroundColor: UIColor
-		switch textField.keyboardAppearance {
-			case .default:
-				print("COR default")
-				backgroundColor = gray
-			case .dark:
-				print("COR dark")
-				backgroundColor = .systemGray
-			case .light:
-				print("COR light")
-				backgroundColor = .systemGray6
-			@unknown default:
-				print("COR unknown")
-				backgroundColor = .systemGray6
+	private func setTitleAndButton() {
+		
+		if let product = product {
+			title = product.productName
+			addOrEditButton.setTitle("Editar", for: .normal)
+		} else {
+			title = "Cadastrar Produto"
+			addOrEditButton.setTitle("Cadastrar", for: .normal)
 		}
-		return backgroundColor
+
 	}
-	
-	func setupProductNameTextField() {
+
+	private func setupProductNameTextField() {
 
 		let keyboardBackgroundColor = getKeyboardBackgroundColor(forTextField: productNameTextField)
 		
@@ -123,10 +128,11 @@ class ProdutoViewController: UIViewController {
 		
 		productNameTextField.delegate = self
 		productNameTextField.inputAccessoryView = toolBar
+		productNameTextField.autocapitalizationType = .words
 
 	}
 	
-	func setupPriceInDollarsTextField() {
+	private func setupPriceInDollarsTextField() {
 		
 		let toolBar = UIToolbar()
 		let okButton = UIBarButtonItem(title: "ok",
@@ -144,132 +150,155 @@ class ProdutoViewController: UIViewController {
 		priceInDollarsTextField.inputAccessoryView = toolBar
 	}
 
-	func setupCadastrarButton() {
-		cadastrarButton.backgroundColor = .systemGray5
-	}
-	
-	func setupStateOfUSATextField() {
+	private func setupStateOfUSATextField() {
 		stateOfUsaTextField.delegate = self
 	}
 	
-	func setupPickerView() {
-		pickerView.dataSource = self
-		pickerView.delegate = self
-		bluredViewWithPicker.isHidden = true
-	}
-	
-	@objc
-	func okButtonWasTapped() {
-		view.endEditing(true)
-	}
-	
-	@objc
-	func nextButtonWasTapped() {
-		view.endEditing(true)
-		showBluredViewWithPicker()
+	private func setupAddOrEditButton() {
+		addOrEditButton.backgroundColor = .systemGray5
 	}
 
+	private func setupPickerView() {
+		
+		americanStatePickerView.dataSource = self
+		americanStatePickerView.delegate = self
+
+		if
+			let state = product?.state,
+			let row = statesManager.states.firstIndex(of: state) {
+			americanStatePickerView.selectRow(row, inComponent: 0, animated: false)
+		}
+
+		parentViewWithAmericanStatePicker.isHidden = true
+		
+	}
+	
+	private func loadProductDataIfProductIsNotNil() {
+		
+		if let product = product {
+			
+			let priceInDollarsAsDouble = product.priceInDollars
+			
+			let formattedPriceAsDollar = calculator.convertDoubleToCurrency(double: priceInDollarsAsDouble,
+																			withLocale: .enUS,
+																			returningStringWithCurrencySymbol: false)
+			
+			productNameTextField.text        = product.productName
+			productOrPlaceholderImage.image  = product.image as? UIImage
+			stateOfUsaTextField.text         = product.state?.stateName
+			priceInDollarsTextField.text     = formattedPriceAsDollar
+			paymentWithCreditCardSwitch.isOn = product.paymentWithCreditCard
+			
+		}
+		
+	}
+	
+	@objc
+	private func okButtonWasTapped() {
+		view.endEditing(true)
+	}
+	
+	@objc
+	private func nextButtonWasTapped() {
+		view.endEditing(true)
+		showBluredViewWithAmericanStatePicker()
+	}
+	
+	// MARK: - Handler methods
+	
+	private func getKeyboardBackgroundColor(forTextField textField: UITextField) -> UIColor {
+		
+		let gray = UIColor(red: 214/255, green: 216/255, blue: 221/255, alpha: 1)
+		var backgroundColor: UIColor
+		
+		switch textField.keyboardAppearance {
+			case .default:
+				backgroundColor = gray
+			case .dark:
+				backgroundColor = .systemGray
+			case .light:
+				backgroundColor = .systemGray6
+			@unknown default:
+				backgroundColor = .systemGray6
+		}
+		
+		return backgroundColor
+		
+	}
+	
     // MARK: - Actions
 	@IBAction func imageButtonWasTapped(_ sender: UIButton) {
 		showAlertControllerAsActionSheet(viewController: self)
 	}
-	
-	@IBAction func okPickerBarButtonItemWasTapped(_ sender: UIBarButtonItem) {
-		hideBluredViewWithPicker()
-	}
-	
-	
 
-		
-		
-
-	
-
-	
-	
-//	@IBAction func addButtonWasTapped(_ sender: UIButton) {
-//		// TODO: - ⚠️
-//		// Clicando no botão +, o usuário será levado para a tela de Ajustes, onde poderá cadastrar os Estados que serão selecionados pelo UITextField “Estado da compra”.
-//
-//	}
-	
-	
-	
-	
-	@IBAction func cadastrarButtonWasTapped(_ sender: UIButton) {
+	@IBAction func addOrEditButtonWasTapped(_ sender: UIButton) {
 		if product == nil {
 			addNewProduct()
 		} else {
 			editProduct()
 		}
 	}
-	
 
-	
-	// MARK: - Handler Methods
 	private func addNewProduct() {
-		
-		let isProductImageSelected = productOrPlaceholderImage.image != UIImage(named: "placeholderImage")
-		
-		if productNameTextField.text?.isEmpty ?? true    { return showAlert(forRequiredData: .productNameTextField) }
-        
-		
-		// TODO
-//		guard let selectedState = selectedState else     { return showAlert(forRequiredData: .stateOfUSATextField) }
-		
-		if priceInDollarsTextField.text?.isEmpty ?? true { return showAlert(forRequiredData: .priceinDollarsTextField) }
-
-		guard isProductImageSelected else { return showAlert(forRequiredData: .producImage) }
-		
-		// Product:
-		// --------------------------
-
 		product = Product(context: context)
-
-		product.productName = productNameTextField.text
-		product.image = productOrPlaceholderImage.image
-		
-		// ⚠️ TODO
-		product.state = product.state // ⚠️ TODO selectedState
-		
-		let priceinDollars = priceInDollarsTextField.text ?? ""
-		product.priceInDollars = Double(priceinDollars) ?? 0.00
-		
-		// State:
-		// --------------------------
-		
-		 //state = State(context: context)
-		 //state.state = .california // ⚠️ TODO
-		
-		
-		do {
-			try context.save()
-		} catch {
-			print(error.localizedDescription) // ⚠️ TODO
-		}
-		
-		navigationController?.popViewController(animated: true)
-	
+		saveProduct()
 	}
 	
 	private func editProduct() {
+		saveProduct()
+	}
+	
+	private func saveProduct() {
+		
+		if let product = product {
+		
+			let isProductImageSelected = productOrPlaceholderImage.image != UIImage(named: "placeholderImage")
+			
+			if    productNameTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .productNameTextField) }
+			if     stateOfUsaTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .stateOfUSATextField) }
+			if priceInDollarsTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .priceinDollarsTextField) }
+			guard isProductImageSelected else                { return showAlert(forMissingRequiredData: .producImage) }
+			
+			let priceInDollarsAsString = priceInDollarsTextField.text ?? "0.00"
+			let priceInDollarsAsStringWithCommaDecimalSeparator = String(format:"%.2f", priceInDollarsAsString.doubleValue)
+			let priceInDollarsAsDouble = calculator.convertStringToDouble(string: priceInDollarsAsStringWithCommaDecimalSeparator)
+			
+			product.productName           = productNameTextField.text
+			product.image                 = productOrPlaceholderImage.image
+			product.state                 = state
+			product.priceInDollars        = priceInDollarsAsDouble
+			product.paymentWithCreditCard = paymentWithCreditCardSwitch.isOn
+			
+			do {
+				try context.save()
+			} catch {
+				print(error.localizedDescription)
+			}
+			
+			navigationController?.popViewController(animated: true)
+			
+		} else {
+			print("Unknowed error")
+		}
 		
 	}
 	
-	func showAlert(forRequiredData requiredData: RequiredDataForProdutoViewController) {
+	private func showAlert(forMissingRequiredData requiredData: RequiredDataForProdutoViewController) {
 
 		let alertController = UIAlertController(title: requiredData.title,
 												message: requiredData.message,
 												preferredStyle: .alert)
 
-		// add okAction
 		alertController.addAction( UIAlertAction( title: "fechar", style: .default, handler: nil) )
 
-		// add preencherAction
+		let productNameAction = UIAlertAction(title: "preencher", style: .default){ _ in self.productNameTextField.becomeFirstResponder() }
+		let stateOfUsaAction = UIAlertAction(title: "preencher", style: .default){ _ in self.stateOfUsaTextField.becomeFirstResponder() }
+		let priceInDollarsAction = UIAlertAction(title: "preencher", style: .default){ _ in self.priceInDollarsTextField.becomeFirstResponder() }
+		
 		switch requiredData {
-			case .productNameTextField:    alertController.addAction( UIAlertAction(title: "preencher", style: .default){ _ in self.productNameTextField.becomeFirstResponder() }    )
-			case .stateOfUSATextField:     alertController.addAction( UIAlertAction(title: "preencher", style: .default){ _ in self.stateOfUsaTextField.becomeFirstResponder() }     )
-			case .priceinDollarsTextField: alertController.addAction( UIAlertAction(title: "preencher", style: .default){ _ in self.priceInDollarsTextField.becomeFirstResponder() } )
+			case .productNameTextField:    alertController.addAction(productNameAction)
+			case .stateOfUSATextField:     alertController.addAction(stateOfUsaAction)
+			case .priceinDollarsTextField: alertController.addAction(priceInDollarsAction)
 			case .producImage: break
 		}
 
@@ -277,18 +306,16 @@ class ProdutoViewController: UIViewController {
 
 	}
 
+	// MARK: - Navigation
 
-
-	
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		
+		if segue.identifier == "addStateSegue" {
+			let destinationNavigationController = segue.destination as! UINavigationController
+			let settingsTableViewController = destinationNavigationController.topViewController as! SettingsTableViewController
+			settingsTableViewController.showDismissButtonAsLeftBarButtonItem = true
+		}
+	}
 
 }
 
@@ -303,10 +330,9 @@ extension ProdutoViewController: UITextFieldDelegate {
 			print("productNameTextField")
 			
 			case stateOfUsaTextField:
-				
 			print("stateOfUsaTextField")
 			textField.resignFirstResponder()
-			showBluredViewWithPicker()
+			showBluredViewWithAmericanStatePicker()
 			
 			case priceInDollarsTextField:
 			print("priceInDollarsTextField")
@@ -322,10 +348,46 @@ extension ProdutoViewController: UITextFieldDelegate {
 		!(productNameTextField.text?.isEmpty    ?? true) &&
 		!(stateOfUsaTextField.text?.isEmpty     ?? true) &&
 		!(priceInDollarsTextField.text?.isEmpty ?? true) {
-			cadastrarButton.backgroundColor = .systemBlue
+			addOrEditButton.backgroundColor = .systemBlue
 		}
 	}
 	
+}
+
+// MARK: - UIPickerView animations (show and hide)
+extension ProdutoViewController {
+	
+	func hideBluredViewWithPicker() {
+		americanStatePickerViewBottomConstraint.constant = pickerViewBottomConstraintConstant
+		UIView.animate(
+			withDuration: 0.5,
+			delay: 0,
+			usingSpringWithDamping: 1.0,
+			initialSpringVelocity: 1.0,
+			options: .curveEaseInOut,
+			animations: { self.view.layoutIfNeeded() }
+		) { _ in
+			self.parentViewWithAmericanStatePicker.isHidden = true
+		}
+	}
+	
+	func showBluredViewWithAmericanStatePicker() {
+		parentViewWithAmericanStatePicker.isHidden = false
+		americanStatePickerViewBottomConstraint.constant = 0
+		UIView.animate(
+			withDuration: 0.5,
+			delay: 0,
+			usingSpringWithDamping: 1.0,
+			initialSpringVelocity: 1.0,
+			options: .curveEaseInOut,
+			animations: { self.view.layoutIfNeeded() }
+		)
+	}
+	
+	
+	@IBAction func americanStatePickerOKBarButtonItemWasTapped(_ sender: UIBarButtonItem) {
+		hideBluredViewWithPicker()
+	}
 	
 }
 
@@ -337,85 +399,20 @@ extension ProdutoViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-		return StateOfUSA.allCases.count
+		return statesManager.states.count
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-		let states = StateOfUSA.allCases
-		return states[row].rawValue
+		return statesManager.states[row].stateName
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-		
-		// TODO
-		
-		/*
-		let states = StateOfUSA.allCases
-		selectedState = states[row]
-		stateOfUsaTextField.text = selectedState?.rawValue
-        */
-
-
+		state = statesManager.states[row]
+		product?.state = state
+		stateOfUsaTextField.text = state?.stateName
 	}
 	
 }
-
-// MARK: - UIPickerView animations (show and hide)
-extension ProdutoViewController {
-	
-	func hideBluredViewWithPicker() {
-		pickerViewBottomConstraint.constant = pickerViewBottomConstraintConstant
-		UIView.animate(
-			withDuration: 0.5,
-			delay: 0,
-			usingSpringWithDamping: 1.0,
-			initialSpringVelocity: 1.0,
-			options: .curveEaseInOut,
-			animations: { self.view.layoutIfNeeded() }
-		) { _ in
-			self.bluredViewWithPicker.isHidden = true
-		}
-	}
-	
-	func showBluredViewWithPicker() {
-		bluredViewWithPicker.isHidden = false
-		pickerViewBottomConstraint.constant = 0
-		UIView.animate(
-			withDuration: 0.5,
-			delay: 0,
-			usingSpringWithDamping: 1.0,
-			initialSpringVelocity: 1.0,
-			options: .curveEaseInOut,
-			animations: { self.view.layoutIfNeeded() }
-		)
-	}
-	
-}
-
-//extension ProdutoViewController: UIImagePickerControllerDelegate,
-//                                 UINavigationControllerDelegate {
-//
-//	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//
-//		guard let image = info[.editedImage] as? UIImage else { return }
-//
-//
-//		let imageNameAsUniversallyUniqueIdentifier = UUID().uuidString
-//		let imagePath = getDocumentsDirectory().appendingPathComponent(imageNameAsUniversallyUniqueIdentifier)
-//
-//		if let jpegData = image.jpegData(compressionQuality: 0.8) {
-//			try? jpegData.write(to: imagePath)
-//		}
-//
-//		dismiss(animated: true)
-//	}
-//
-//	func getDocumentsDirectory() -> URL {
-//		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//		return paths[0]
-//	}
-//
-//}
 
 extension ProdutoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	

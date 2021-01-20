@@ -20,6 +20,7 @@ protocol ProductProtocol: class {
 class ComprasTableViewController: UITableViewController {
 	
 	// MARK: - Properties
+
 	private(set) lazy var label: UILabel = {
 		let label = UILabel()
 		label.text = "Sua lista está vazia!"
@@ -41,6 +42,13 @@ class ComprasTableViewController: UITableViewController {
 		fetchProducts()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		DispatchQueue.main.async {
+			self.tableView.reloadData()
+		}
+	}
+	
 	// MARK: - Methods
 	func configureTableView() {
 		tableView.separatorStyle = .none
@@ -49,10 +57,9 @@ class ComprasTableViewController: UITableViewController {
 	func fetchProducts() {
 		
 		let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-
-		fetchRequest.sortDescriptors = [
-			NSSortDescriptor(key: "productName", ascending: true)
-		]
+		let sortDescriptorAsProductName = NSSortDescriptor(key: "productName", ascending: true)
+		
+		fetchRequest.sortDescriptors = [sortDescriptorAsProductName]
 		
 		fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
 															  managedObjectContext: context,
@@ -89,22 +96,20 @@ class ComprasTableViewController: UITableViewController {
     }
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
+
 		guard
 			let cell = tableView.dequeueReusableCell(withIdentifier: "productTableViewCell", for: indexPath) as? ProductTableViewCell,
 			let product = fetchedResultsController.fetchedObjects?[indexPath.row]
 		else {
 			return UITableViewCell()
 		}
-		
+
 		cell.setCellWith(product, andCounter: indexPath.row)
 
 		return cell
 	}
 	
-	@IBAction func addButtonWasTapped(_ sender: UIBarButtonItem) {
-		print("addButtonWasTapped")
-	}
+
 	
     /*
 
@@ -146,18 +151,31 @@ class ComprasTableViewController: UITableViewController {
     */
 
     /*
-    // MARK: - Navigation
+    
+	
+	editProductSegue
+	addProductSegue
+*/
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    // MARK: - Navigation
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "editProductSegue" {
+			let nextViewController = segue.destination as! ProdutoViewController
+			if let products = fetchedResultsController.fetchedObjects {
+				nextViewController.product = products[tableView.indexPathForSelectedRow!.row]
+			}
+		}
     }
-    */
+    
 
 }
 
+// MARK: - CoreData Extension
+
 extension ComprasTableViewController: NSFetchedResultsControllerDelegate {
+	
+	// Performe some action when value did change
 	
 	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 					didChange anObject: Any,
