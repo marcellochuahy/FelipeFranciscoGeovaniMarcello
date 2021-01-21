@@ -25,13 +25,9 @@ class TotalViewController: UIViewController {
 	let userDefaults = UserDefaults.standard
 	
 	var products: [Product] = []
-	
-	
-	//var fetchedResultsController: NSFetchedResultsController<Product>!
-	
+
 	lazy var exchangeRateDolarAndReal: Double = { userDefaults.double(forKey: "AmericanDollarExchangeRate") }()
 	lazy var iofAsPercentage: Double          = { userDefaults.double(forKey: "IOF") }()
-	
 	
 	var pricesInDollars: [Double] = []
 	var taxesInDollars: [Double] = []
@@ -49,11 +45,13 @@ class TotalViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 		fetchProducts(withContext: context)
 		mapProducts()
 		setLabels()
-
 	}
 
 	func mapProducts() {
@@ -81,10 +79,6 @@ class TotalViewController: UIViewController {
 		totalAmountOfIofInRealAsDouble = totalAmountOfIofInDollarAsDouble * exchangeRateDolarAndReal
 		totalAmountOfProductsWithTaxesInRealAsDouble = totalAmountInDollarAsDouble * exchangeRateDolarAndReal
 		totalAmountInReal = totalAmountOfProductsWithTaxesInRealAsDouble + totalAmountOfIofInRealAsDouble
-		
-		print("totalAmountOfIofInRealAsDouble: \(totalAmountOfIofInRealAsDouble)")
-		print("totalAmountOfProductsWithTaxesInRealAsDouble: \(totalAmountOfProductsWithTaxesInRealAsDouble)")
-		print("totalAmountInReal: \(totalAmountInReal)")
 		
 	}
 	
