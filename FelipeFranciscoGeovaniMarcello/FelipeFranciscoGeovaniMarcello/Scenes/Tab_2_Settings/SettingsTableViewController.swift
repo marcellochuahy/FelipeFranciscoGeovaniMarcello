@@ -94,7 +94,17 @@ class SettingsTableViewController: UITableViewController {
 		alertController.addTextField { textField in
 			textField.placeholder = "Nome do estado"
 			textField.autocapitalizationType = .words
-			if let state = state { textField.text = state.stateName }
+			if let state = state {
+				textField.text = state.stateName
+			}
+		}
+		
+		alertController.addTextField { textField in
+			textField.placeholder = "Imposto do estado"
+			textField.keyboardType = .decimalPad
+			if let state = state {
+				textField.text = self.calculator.convertDoubleToString(double: state.tax)
+			}
 		}
 		
 		let action = UIAlertAction(title: actionAsString, style: .default) { (action: UIAlertAction) in
@@ -110,7 +120,14 @@ class SettingsTableViewController: UITableViewController {
 	func saveStateAndGetRefreshedStates(withAlertController alertController: UIAlertController, andState state: State?) {
 		
 		let state = state ?? State(context: self.context)
-		state.stateName = alertController.textFields?.first?.text
+		let stateName = alertController.textFields?[0].text
+		let taxAsString = alertController.textFields?[1].text ?? "0.00"
+		let taxAsStringWithCommaDecimalSeparator = String(format:"%.2f", taxAsString.doubleValue)
+		let taxAsDouble = calculator.convertStringToDouble(numberAsString: taxAsStringWithCommaDecimalSeparator)
+		
+		state.stateName = stateName
+		state.tax = taxAsDouble
+		
 		
 		do {
 			try self.context.save()
@@ -120,35 +137,6 @@ class SettingsTableViewController: UITableViewController {
 		}
 		
 	}
-
-    // MARK: - Table view data source
-	
-
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
@@ -249,6 +237,19 @@ extension SettingsTableViewController {
 			
 			case .stateAndTax:
 				
+				
+				/*
+				
+				if SettingsSections.getSection(indexPath.section) == .stateAndTax {
+				let state = statesManager.states[indexPath.row]
+				showAlert(withState: state)
+				tableView.deselectRow(at: indexPath, animated: false)
+				}
+				
+				TODO: Refazer passando state como opcional
+				
+				*/
+				
 				let state = statesManager.states[indexPath.row].stateName ?? ""
 				let tax   = String(statesManager.states[indexPath.row].tax)
 				
@@ -263,6 +264,14 @@ extension SettingsTableViewController {
 		
 		return cell
 		
+	}
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if SettingsSections.getSection(indexPath.section) == .stateAndTax {
+			let state = statesManager.states[indexPath.row]
+			showAlert(withState: state)
+			tableView.deselectRow(at: indexPath, animated: false)
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -281,12 +290,15 @@ extension SettingsTableViewController {
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		
 		if editingStyle == .delete {
-			// Delete the row from the data source
-			tableView.deleteRows(at: [indexPath], with: .fade)
-		} else if editingStyle == .insert {
-			// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-		}
+			switch SettingsSections.getSection(indexPath.section) {
+				case .stateAndTax:
+					statesManager.deleteState(at: indexPath.row, context: context)
+				default:
+					break
+			}
 		
+			tableView.deleteRows(at: [indexPath], with: .fade)
+		}
 	}
 	
 }
@@ -294,32 +306,38 @@ extension SettingsTableViewController {
 // MARK: - SettingsTableViewCellDelegate
 extension SettingsTableViewController: SettingsTableViewCellDelegate {
 
-	func textField(_ textField: UITextField, valueHasChanged: Bool, for kindOfSettingsData: KindOfSettingsData) {
+	func textField(_ textField: UITextField, titleLabel: String, valueHasChanged: Bool, for kindOfSettingsData: KindOfSettingsData) {
 		
 		switch kindOfSettingsData {
 			case .dollar:
 				guard let americanDollarExchangeRateAsString = textField.text else { return }
-				let americanDollarExchangeRateAsDouble = calculator.convertStringToDouble(string: americanDollarExchangeRateAsString)
+				let americanDollarExchangeRateAsDouble = calculator.convertStringToDouble(numberAsString: americanDollarExchangeRateAsString)
 				saveDollar(americanDollarExchangeRateAsDouble: americanDollarExchangeRateAsDouble)
 			case .iof:
 				guard let iofAsString = textField.text else { return }
-				let iofAsDouble = calculator.convertStringToDouble(string: iofAsString)
+				let iofAsDouble = calculator.convertStringToDouble(numberAsString: iofAsString)
 				saveIof(iofAsDouble: iofAsDouble)
 			case .state:
-				print("⚠️ state")
+				guard let taxAsString = textField.text else { return }
+				let taxAsDouble = calculator.convertStringToDouble(numberAsString: taxAsString)
+				saveStateAndTax(state: titleLabel, andTaxAsDouble: taxAsDouble)
 		}
-		
 		
 	}
 	
-	func saveDollar(americanDollarExchangeRateAsDouble: Double) {
+	private func saveDollar(americanDollarExchangeRateAsDouble: Double) {
 		print("Saving key AmericanDollarExchangeRateAsDouble: \(americanDollarExchangeRateAsDouble)")
 		userDefaults.set(americanDollarExchangeRateAsDouble, forKey: "AmericanDollarExchangeRate")
 	}
 	
-	func saveIof(iofAsDouble: Double) {
+	private func saveIof(iofAsDouble: Double) {
 		print("Saving key IOF: \(iofAsDouble)")
 		userDefaults.set(iofAsDouble, forKey: "IOF")
+	}
+	
+	private func saveStateAndTax(state: String, andTaxAsDouble taxAsDouble: Double) {
+		print("⚠️ state.stateName")
+		print("⚠️ state.tax")
 	}
 
 }

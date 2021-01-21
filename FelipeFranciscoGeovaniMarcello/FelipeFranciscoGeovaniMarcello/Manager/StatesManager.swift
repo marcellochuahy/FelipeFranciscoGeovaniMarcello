@@ -37,6 +37,7 @@ class StatesManager {
 		
 		do {
 			try context.save()
+			states.remove(at: index)
 		} catch {
 			print(error.localizedDescription)
 		}

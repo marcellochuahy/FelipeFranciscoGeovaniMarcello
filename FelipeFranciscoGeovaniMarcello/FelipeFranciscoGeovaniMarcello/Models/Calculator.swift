@@ -48,9 +48,8 @@ class Calculator {
 	var productTaxInDolar: Double { priceInDolar * stateTaxAsPercentage / 100 }
 	var productIofInDolar: Double { (priceInDolar + productTaxInDolar) *  iofAsPercentage / 100 }
 	
-	func convertStringToDouble(string: String) -> Double {
-		numberFormatter.numberStyle = .none
-		return numberFormatter.number(from: string)?.doubleValue ?? 0.00
+	func convertStringToDouble(numberAsString: String) -> Double {
+		return Double(numberAsString) ?? 0.00
 	}
 	
 	func convertDoubleToString(double: Double) -> String {

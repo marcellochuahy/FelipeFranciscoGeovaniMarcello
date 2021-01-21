@@ -8,13 +8,12 @@
         <relationship name="state" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="State" inverseName="products" inverseEntity="State"/>
     </entity>
     <entity name="State" representedClassName="State" syncable="YES" codeGenerationType="class">
-        <attribute name="isEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="stateName" attributeType="String"/>
         <attribute name="tax" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Product" inverseName="state" inverseEntity="Product"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Product" inverseName="state" inverseEntity="Product"/>
     </entity>
     <elements>
         <element name="Product" positionX="-125.234375" positionY="-0.4765625" width="128" height="118"/>
-        <element name="State" positionX="-393.62890625" positionY="-137.296875" width="128" height="103"/>
+        <element name="State" positionX="-393.62890625" positionY="-137.296875" width="128" height="88"/>
     </elements>
 </model>

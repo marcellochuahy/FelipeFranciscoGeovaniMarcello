@@ -15,7 +15,7 @@ enum KindOfSettingsData {
 }
 
 protocol SettingsTableViewCellDelegate: class {
-	func textField(_ textField: UITextField, valueHasChanged: Bool, for kindOfSettingsData: KindOfSettingsData)
+	func textField(_ textField: UITextField, titleLabel: String, valueHasChanged: Bool, for kindOfSettingsData: KindOfSettingsData)
 }
 
 class SettingsTableViewCell: UITableViewCell {
@@ -56,8 +56,8 @@ class SettingsTableViewCell: UITableViewCell {
 	
 	@objc func doneButtonWasTapped() {
 
-		guard let kindOfSettingsData = kindOfSettingsData else { return }
-		delegate?.textField(textField, valueHasChanged: true, for: kindOfSettingsData)
+		guard let kindOfSettingsData = kindOfSettingsData, let titleLabelText = titleLabel.text else { return }
+		delegate?.textField(textField, titleLabel: titleLabelText, valueHasChanged: true, for: kindOfSettingsData)
 		
 		textField.resignFirstResponder()
 		

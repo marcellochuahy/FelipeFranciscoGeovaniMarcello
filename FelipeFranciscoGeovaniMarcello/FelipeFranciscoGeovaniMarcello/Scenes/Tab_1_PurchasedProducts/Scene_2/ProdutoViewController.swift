@@ -201,7 +201,9 @@ class ProdutoViewController: UIViewController {
 	@objc
 	private func nextButtonWasTapped() {
 		view.endEditing(true)
-		showBluredViewWithAmericanStatePicker()
+		
+		// TODO: - ⚠️
+		// showBluredViewWithAmericanStatePicker()
 	}
 	
 	// MARK: - Handler methods
@@ -255,13 +257,17 @@ class ProdutoViewController: UIViewController {
 			let isProductImageSelected = productOrPlaceholderImage.image != UIImage(named: "placeholderImage")
 			
 			if    productNameTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .productNameTextField) }
+			guard isProductImageSelected else                { return showAlert(forMissingRequiredData: .producImage) }
 			if     stateOfUsaTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .stateOfUSATextField) }
 			if priceInDollarsTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .priceinDollarsTextField) }
-			guard isProductImageSelected else                { return showAlert(forMissingRequiredData: .producImage) }
-			
+
 			let priceInDollarsAsString = priceInDollarsTextField.text ?? "0.00"
 			let priceInDollarsAsStringWithCommaDecimalSeparator = String(format:"%.2f", priceInDollarsAsString.doubleValue)
-			let priceInDollarsAsDouble = calculator.convertStringToDouble(string: priceInDollarsAsStringWithCommaDecimalSeparator)
+			let priceInDollarsAsDouble = calculator.convertStringToDouble(numberAsString: priceInDollarsAsStringWithCommaDecimalSeparator)
+			
+			print("priceInDollarsAsString: \(priceInDollarsAsString)")
+			print("priceInDollarsAsStringWithCommaDecimalSeparator: \(priceInDollarsAsStringWithCommaDecimalSeparator)")
+			print("priceInDollarsAsDouble: \(priceInDollarsAsDouble)")
 			
 			product.productName           = productNameTextField.text
 			product.image                 = productOrPlaceholderImage.image

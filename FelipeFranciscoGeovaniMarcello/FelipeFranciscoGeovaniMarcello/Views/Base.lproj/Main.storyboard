@@ -103,7 +103,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="bAM-jJ-Fcz">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="6fp-55-WHZ">
+                        <barButtonItem key="leftBarButtonItem" title="Adcionar" id="6fp-55-WHZ">
                             <connections>
                                 <segue destination="KWi-VU-JTR" kind="show" identifier="addProductSegue" id="IIZ-cZ-Yry"/>
                             </connections>

@@ -30,6 +30,7 @@ class ComprasTableViewController: UITableViewController {
 
 	var mockedProducts: [AnyObject] = []
 	var fetchedResultsController: NSFetchedResultsController<Product>!
+	let searchController = UISearchController(searchResultsController: nil)
 	
 	// MARK: - Outlets
 
@@ -38,26 +39,45 @@ class ComprasTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		title = "Compras"
+		configureNavigationItem()
+		configureSearchController()
 		configureTableView()
-		fetchProducts()
+		//fetchProducts()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		fetchProducts()
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
 	}
 	
 	// MARK: - Methods
+	
+	func configureNavigationItem() {
+		self.navigationItem.rightBarButtonItem = self.editButtonItem
+	}
+	
+	func configureSearchController() {
+		searchController.searchResultsUpdater = self
+		searchController.searchBar.delegate = self
+		navigationItem.searchController = searchController
+	}
+	
 	func configureTableView() {
 		tableView.separatorStyle = .none
 	}
 	
-	func fetchProducts() {
+	func fetchProducts(withFilter filter: String = "") {
 		
 		let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
 		let sortDescriptorAsProductName = NSSortDescriptor(key: "productName", ascending: true)
+		
+		if !filter.isEmpty {
+			let predicate = NSPredicate(format: "productName contains [c] %@", filter) // [c]: Case insensitive
+			fetchRequest.predicate = predicate
+		}
 		
 		fetchRequest.sortDescriptors = [sortDescriptorAsProductName]
 		
@@ -79,20 +99,19 @@ class ComprasTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-
-		let count = fetchedResultsController.fetchedObjects?.count ?? 0
-
-		if count == 0 {
-			tableView.backgroundView = label
-			return 0
-		} else {
-			return 1
-		}
-		
+		return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.fetchedObjects?.count ?? 0
+		let numberOfRowsInSection = fetchedResultsController.fetchedObjects?.count ?? 0
+		if numberOfRowsInSection == 0 {
+			label.text = "Sua lista está vazia!"
+			tableView.backgroundView = label
+		} else {
+			label.text = ""
+			tableView.backgroundView = label
+		}
+        return numberOfRowsInSection
     }
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -108,54 +127,25 @@ class ComprasTableViewController: UITableViewController {
 
 		return cell
 	}
-	
 
-	
-    /*
-
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+		
+		if editingStyle == .delete {
+			
+			guard let product = fetchedResultsController.fetchedObjects?[indexPath.row] else { return }
+			
+			context.delete(product)
+			
+			do {
+				try context.save()
+			} catch {
+				print(error.localizedDescription)
+			}
+
+        }
+		
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    
-	
-	editProductSegue
-	addProductSegue
-*/
 
     // MARK: - Navigation
 	
@@ -168,7 +158,6 @@ class ComprasTableViewController: UITableViewController {
 		}
     }
     
-
 }
 
 // MARK: - CoreData Extension
@@ -185,11 +174,30 @@ extension ComprasTableViewController: NSFetchedResultsControllerDelegate {
 		
 		switch type {
 			case .delete:
-			break
+				guard let indexPath = indexPath else { return }
+				tableView.deleteRows(at: [indexPath], with: .fade)
 			default:
 				tableView.reloadData()
 		}
 		
+	}
+	
+}
+
+extension ComprasTableViewController: UISearchResultsUpdating, UISearchBarDelegate {
+	
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		fetchProducts(withFilter: searchBar.text ?? "")
+		tableView.reloadData()
+	}
+	
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		fetchProducts()
+		tableView.reloadData()
+	}
+
+	func updateSearchResults(for searchController: UISearchController) {
+		// Intencionally not implemented
 	}
 	
 }
