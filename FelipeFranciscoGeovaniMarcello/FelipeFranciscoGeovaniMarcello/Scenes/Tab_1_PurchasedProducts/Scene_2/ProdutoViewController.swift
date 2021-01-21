@@ -415,6 +415,7 @@ extension ProdutoViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 	
 }
 
+// MARK: - UIImagePickerController
 extension ProdutoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	func showAlertControllerAsActionSheet(viewController: UIViewController) {

@@ -35,12 +35,15 @@ class Calculator {
 	
 	let numberFormatter = NumberFormatter()
 	
+	let userDefaults = UserDefaults.standard
+	
 	private init() {
 		numberFormatter.usesGroupingSeparator = true
 	}
+
+	lazy var exchangeRateDolarAndReal: Double = { userDefaults.double(forKey: "AmericanDollarExchangeRate") }()
+	lazy var iofAsPercentage: Double          = { userDefaults.double(forKey: "IOF") }()
 	
-	var exchangeRateDolarAndReal: Double = 5.0
-	var iofAsPercentage: Double = 0.00
 	var stateTaxAsPercentage: Double = 0.0
 	var priceInDolar: Double = 0.0
 	
@@ -54,7 +57,7 @@ class Calculator {
 	}
 	
 	func convertDoubleToString(double: Double, withLocale customLocale: CustomLocale?) -> String {
-		numberFormatter.locale = customLocale?.locale // Locale(identifier: "pt_BR")
+		numberFormatter.locale = customLocale?.locale
 		numberFormatter.minimumFractionDigits = 2
 		numberFormatter.numberStyle = .decimal
 		return numberFormatter.string(from: NSNumber(value:double)) ?? "0,00"

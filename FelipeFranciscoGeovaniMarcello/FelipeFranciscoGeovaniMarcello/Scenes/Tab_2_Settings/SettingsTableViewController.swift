@@ -24,6 +24,45 @@ class SettingsTableViewController: UITableViewController {
 		return label
 	}()
 	
+	private(set) lazy var toolBar: UIToolbar = {
+		
+		let toolBar = UIToolbar()
+		
+		let okButton = UIBarButtonItem(title: "ok",
+									   style: .done,
+									   target: self,
+									   action: #selector(okButtonWasTapped))
+		
+		let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+											target: nil,
+											action: nil)
+		
+		let nextButton = UIBarButtonItem(title: "next",
+										 style: .done,
+										 target: self,
+										 action: #selector(nextButtonWasTapped))
+		
+		toolBar.barStyle = UIBarStyle.default
+		toolBar.isTranslucent = false
+		// TODO: - toolBar.barTintColor = keyboardBackgroundColor
+		toolBar.setItems([okButton, flexibleSpace, nextButton], animated: false)
+		toolBar.isUserInteractionEnabled = true
+		toolBar.sizeToFit()
+		
+		return toolBar
+		
+	}()
+	
+	private(set) lazy var americanStatePickerView: UIPickerView = {
+		let datePicker = UIPickerView()
+		datePicker.dataSource = self
+		datePicker.delegate = self
+		return datePicker
+	}()
+
+	var americanStateNameStateTextFieldPicker: UITextField?
+	var americanStateTaxTextFieldPicker: UITextField?
+
 	var showDismissButtonAsLeftBarButtonItem = false
 	
 	// MARK: - Life cycle
@@ -69,10 +108,10 @@ class SettingsTableViewController: UITableViewController {
 	
 	@objc
 	func addStateButtonWasTapped() {
-		showAlert(withState: nil)
+		showConfigurationStateNameAndTaxAlert(withState: nil)
 	}
 	
-	func showAlert(withState state: State?) {
+	func showConfigurationStateNameAndTaxAlert(withState state: State?) {
 		
 		let actionAsString = (state == nil ? "Adcionar" : "Editar")
 		
@@ -86,20 +125,34 @@ class SettingsTableViewController: UITableViewController {
 			self.saveStateAndGetRefreshedStates(withAlertController: alertController, andState: state)
 		}
 		
+		
 		alertController.addTextField { textField in
-			textField.placeholder = "Nome do estado"
-			textField.autocapitalizationType = .words
+			
 			if let state = state {
 				textField.text = state.stateName
 			}
+			
+			textField.placeholder = "Nome do estado"
+			textField.inputAccessoryView = self.toolBar
+			textField.inputView = self.americanStatePickerView
+			textField.delegate = self
+			
+			self.americanStateNameStateTextFieldPicker = textField
+	
 		}
-		
+
 		alertController.addTextField { textField in
-			textField.placeholder = "Imposto do estado"
-			textField.keyboardType = .decimalPad
+			
 			if let state = state {
 				textField.text = self.calculator.convertDoubleToString(double: state.tax, withLocale: nil)
 			}
+			
+			textField.placeholder = "Imposto do estado"
+			textField.keyboardType = .decimalPad
+			textField.delegate = self
+			
+			self.americanStateTaxTextFieldPicker = textField
+
 		}
 
 		alertController.addAction(cancelButton)
@@ -119,8 +172,7 @@ class SettingsTableViewController: UITableViewController {
 		
 		state.stateName = stateName
 		state.tax = taxAsDouble
-		
-		
+
 		do {
 			try self.context.save()
 			self.getStates()
@@ -130,8 +182,21 @@ class SettingsTableViewController: UITableViewController {
 		
 	}
 	
-
-
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		view.endEditing(true)
+	}
+	
+	@objc
+	private func okButtonWasTapped() {
+		view.endEditing(true)
+		americanStateNameStateTextFieldPicker?.resignFirstResponder()
+	}
+	
+	@objc
+	private func nextButtonWasTapped() {
+		americanStateTaxTextFieldPicker?.becomeFirstResponder()
+	}
+	
 }
 
 // MARK: - Table view data source
@@ -229,7 +294,7 @@ extension SettingsTableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if SettingsSections.getSection(indexPath.section) == .stateAndTax {
 			let state = statesManager.states[indexPath.row]
-			showAlert(withState: state)
+			showConfigurationStateNameAndTaxAlert(withState: state)
 			tableView.deselectRow(at: indexPath, animated: false)
 		}
 	}
@@ -339,4 +404,30 @@ extension SettingsTableViewController: NSFetchedResultsControllerDelegate {
 			
 		}
 		
+}
+
+// MARK: - UIPickerViewDataSource, UIPickerViewDelegate
+extension SettingsTableViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+	
+	func numberOfComponents(in pickerView: UIPickerView) -> Int {
+		return 1
+	}
+	
+	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		return StateOfUSA.allCases.count
+	}
+	
+	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+		return StateOfUSA.allCases[row].rawValue
+	}
+	
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		self.americanStateNameStateTextFieldPicker?.text = StateOfUSA.allCases[row].rawValue
+	}
+	
+}
+
+extension SettingsTableViewController: UITextFieldDelegate {
+	
+	
 }
