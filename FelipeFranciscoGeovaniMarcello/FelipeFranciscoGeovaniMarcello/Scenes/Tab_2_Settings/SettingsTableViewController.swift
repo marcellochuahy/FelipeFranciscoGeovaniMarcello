@@ -16,16 +16,7 @@ class SettingsTableViewController: UITableViewController {
 	let statesManager = StatesManager.shared
 	
 	let userDefaults = UserDefaults.standard
-	
-	private(set) lazy var americanDollarExchangeRate: Double = {
-		return userDefaults.double(forKey: "AmericanDollarExchangeRate")
-	}()
-	
-	private(set) lazy var iof: Double = {
-		return userDefaults.double(forKey: "IOF")
-	}()
 
-	
 	private(set) lazy var label: UILabel = {
 		let label = UILabel()
 		label.text = "Lista de estados vazia!"
@@ -87,9 +78,13 @@ class SettingsTableViewController: UITableViewController {
 		
 		let title = actionAsString + " estado americano"
 	
-		let alertController = UIAlertController(title: title,
-												message: nil,
-												preferredStyle: .alert)
+		let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+		
+		let cancelButton = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+		
+		let AddOrEditButton = UIAlertAction(title: actionAsString, style: .default) { (action: UIAlertAction) in
+			self.saveStateAndGetRefreshedStates(withAlertController: alertController, andState: state)
+		}
 		
 		alertController.addTextField { textField in
 			textField.placeholder = "Nome do estado"
@@ -103,15 +98,13 @@ class SettingsTableViewController: UITableViewController {
 			textField.placeholder = "Imposto do estado"
 			textField.keyboardType = .decimalPad
 			if let state = state {
-				textField.text = self.calculator.convertDoubleToString(double: state.tax)
+				textField.text = self.calculator.convertDoubleToString(double: state.tax, withLocale: nil)
 			}
 		}
+
+		alertController.addAction(cancelButton)
 		
-		let action = UIAlertAction(title: actionAsString, style: .default) { (action: UIAlertAction) in
-			self.saveStateAndGetRefreshedStates(withAlertController: alertController, andState: state)
-		}
-		
-		alertController.addAction(action)
+		alertController.addAction(AddOrEditButton)
 		
 		present(alertController, animated: true, completion: nil)
 	
@@ -122,8 +115,7 @@ class SettingsTableViewController: UITableViewController {
 		let state = state ?? State(context: self.context)
 		let stateName = alertController.textFields?[0].text
 		let taxAsString = alertController.textFields?[1].text ?? "0.00"
-		let taxAsStringWithCommaDecimalSeparator = String(format:"%.2f", taxAsString.doubleValue)
-		let taxAsDouble = calculator.convertStringToDouble(numberAsString: taxAsStringWithCommaDecimalSeparator)
+		let taxAsDouble = calculator.convertStringToDouble(numberAsString: taxAsString)
 		
 		state.stateName = stateName
 		state.tax = taxAsDouble
@@ -137,6 +129,8 @@ class SettingsTableViewController: UITableViewController {
 		}
 		
 	}
+	
+
 
 }
 
@@ -214,51 +208,17 @@ extension SettingsTableViewController {
 		switch SettingsSections.getSection(indexPath.section) {
 			
 			case .dollar:
-				
-				let textFieldText = calculator.convertDoubleToString(double: americanDollarExchangeRate)
-				
-				let cellForSectionDolar = SettingsCellModel(labelText: "Cotação do Dolar (R$):",
-															textFieldText: textFieldText,
-															percentageLabelIsHidden: true,
-															kindOfSettingsData: .dollar)
-				
-				cell.configure(delegate: self, withSettingsCellModel: cellForSectionDolar)
+				let cellForSectionDolar = SettingsCellModel(kindOfSettingsData: .dollar, state: nil)
+				cell.configureCell(withDelegate: self, andSettingsCellModel: cellForSectionDolar)
 			
 			case .iof:
-				
-				let textFieldText = calculator.convertDoubleToString(double: iof)
-				
-				let cellForSectionIOF = SettingsCellModel(labelText: "IOF:",
-														  textFieldText: textFieldText,
-														  percentageLabelIsHidden: false,
-														  kindOfSettingsData: .iof)
-				
-				cell.configure(delegate: self, withSettingsCellModel: cellForSectionIOF)
+				let cellForSectionIOF = SettingsCellModel(kindOfSettingsData: .iof, state: nil)
+				cell.configureCell(withDelegate: self, andSettingsCellModel: cellForSectionIOF)
 			
 			case .stateAndTax:
-				
-				
-				/*
-				
-				if SettingsSections.getSection(indexPath.section) == .stateAndTax {
 				let state = statesManager.states[indexPath.row]
-				showAlert(withState: state)
-				tableView.deselectRow(at: indexPath, animated: false)
-				}
-				
-				TODO: Refazer passando state como opcional
-				
-				*/
-				
-				let state = statesManager.states[indexPath.row].stateName ?? ""
-				let tax   = String(statesManager.states[indexPath.row].tax)
-				
-				let cellForSectionStateAndTax = SettingsCellModel(labelText: state,
-																  textFieldText: tax,
-																  percentageLabelIsHidden: false,
-																  kindOfSettingsData: .state)
-				
-				cell.configure(delegate: self, withSettingsCellModel: cellForSectionStateAndTax)
+				let cellForSectionStateAndTax = SettingsCellModel(kindOfSettingsData: .state, state: state)
+				cell.configureCell(withDelegate: self, andSettingsCellModel: cellForSectionStateAndTax)
 			
 		}
 		
@@ -305,26 +265,37 @@ extension SettingsTableViewController {
 
 // MARK: - SettingsTableViewCellDelegate
 extension SettingsTableViewController: SettingsTableViewCellDelegate {
-
-	func textField(_ textField: UITextField, titleLabel: String, valueHasChanged: Bool, for kindOfSettingsData: KindOfSettingsData) {
-		
-		switch kindOfSettingsData {
+	
+	func textField(_ textField: UITextField, valueHasChanged: Bool, inCellWithSettingsCellModel settingsCellModel: SettingsCellModel) {
+	
+		switch settingsCellModel.kindOfSettingsData {
+			
 			case .dollar:
+				
 				guard let americanDollarExchangeRateAsString = textField.text else { return }
 				let americanDollarExchangeRateAsDouble = calculator.convertStringToDouble(numberAsString: americanDollarExchangeRateAsString)
 				saveDollar(americanDollarExchangeRateAsDouble: americanDollarExchangeRateAsDouble)
+			
 			case .iof:
+				
 				guard let iofAsString = textField.text else { return }
 				let iofAsDouble = calculator.convertStringToDouble(numberAsString: iofAsString)
 				saveIof(iofAsDouble: iofAsDouble)
+			
 			case .state:
-				guard let taxAsString = textField.text else { return }
+				
+				guard
+					let state = settingsCellModel.state,
+				    let taxAsString = textField.text else { return }
+				
 				let taxAsDouble = calculator.convertStringToDouble(numberAsString: taxAsString)
-				saveStateAndTax(state: titleLabel, andTaxAsDouble: taxAsDouble)
-		}
-		
-	}
 	
+				saveStateTax(state, withNewTax: taxAsDouble)
+			
+		}
+	
+	}
+
 	private func saveDollar(americanDollarExchangeRateAsDouble: Double) {
 		print("Saving key AmericanDollarExchangeRateAsDouble: \(americanDollarExchangeRateAsDouble)")
 		userDefaults.set(americanDollarExchangeRateAsDouble, forKey: "AmericanDollarExchangeRate")
@@ -335,9 +306,17 @@ extension SettingsTableViewController: SettingsTableViewCellDelegate {
 		userDefaults.set(iofAsDouble, forKey: "IOF")
 	}
 	
-	private func saveStateAndTax(state: String, andTaxAsDouble taxAsDouble: Double) {
-		print("⚠️ state.stateName")
-		print("⚠️ state.tax")
+	func saveStateTax(_ state: State, withNewTax taxAsDouble: Double) {
+
+		state.tax = taxAsDouble
+
+		do {
+			try self.context.save()
+			self.getStates()
+		} catch {
+			print(error.localizedDescription)
+		}
+		
 	}
 
 }

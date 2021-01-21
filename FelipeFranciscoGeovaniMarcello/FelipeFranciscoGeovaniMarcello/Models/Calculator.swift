@@ -49,27 +49,28 @@ class Calculator {
 	var productIofInDolar: Double { (priceInDolar + productTaxInDolar) *  iofAsPercentage / 100 }
 	
 	func convertStringToDouble(numberAsString: String) -> Double {
-		return Double(numberAsString) ?? 0.00
+		let numberAsStringWithCommaDecimalSeparator = String(format:"%.2f", numberAsString.doubleValue)
+		return Double(numberAsStringWithCommaDecimalSeparator) ?? 0.00
 	}
 	
-	func convertDoubleToString(double: Double) -> String {
-		numberFormatter.locale = Locale(identifier: "pt_BR")
+	func convertDoubleToString(double: Double, withLocale customLocale: CustomLocale?) -> String {
+		numberFormatter.locale = customLocale?.locale // Locale(identifier: "pt_BR")
 		numberFormatter.minimumFractionDigits = 2
 		numberFormatter.numberStyle = .decimal
 		return numberFormatter.string(from: NSNumber(value:double)) ?? "0,00"
 	}
 	
 	func convertDoubleToCurrency(double: Double,
-								 withLocale customLocale: CustomLocale,
+								 withLocale customLocale: CustomLocale?,
 								 returningStringWithCurrencySymbol: Bool) -> String {
 
 		if returningStringWithCurrencySymbol {
-			numberFormatter.currencySymbol = customLocale.currencySymbol
+			numberFormatter.currencySymbol = customLocale?.currencySymbol ?? ""
 		} else {
 			numberFormatter.currencySymbol = ""
 		}
 
-		numberFormatter.locale = customLocale.locale
+		numberFormatter.locale = customLocale?.locale
 		numberFormatter.numberStyle = .currency
 		numberFormatter.alwaysShowsDecimalSeparator = true
 		

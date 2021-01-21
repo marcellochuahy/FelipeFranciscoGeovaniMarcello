@@ -10,21 +10,12 @@ import Foundation
 
 struct SettingsCellModel {
 	
-	let labelText: String
-	let textFieldText: String
-	let percentageLabelIsHidden: Bool
 	let kindOfSettingsData: KindOfSettingsData
-	
-	init(
-		labelText: String,
-		textFieldText: String,
-		percentageLabelIsHidden: Bool = true,
-		kindOfSettingsData: KindOfSettingsData
-	) {
-		self.labelText = labelText
-		self.textFieldText = textFieldText
-		self.percentageLabelIsHidden = percentageLabelIsHidden
+	let state: State?
+
+	init(kindOfSettingsData: KindOfSettingsData, state: State?) {
 		self.kindOfSettingsData = kindOfSettingsData
+		self.state = state
 	}
 	
 }

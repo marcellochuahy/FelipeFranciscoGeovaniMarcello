@@ -262,13 +262,8 @@ class ProdutoViewController: UIViewController {
 			if priceInDollarsTextField.text?.isEmpty ?? true { return showAlert(forMissingRequiredData: .priceinDollarsTextField) }
 
 			let priceInDollarsAsString = priceInDollarsTextField.text ?? "0.00"
-			let priceInDollarsAsStringWithCommaDecimalSeparator = String(format:"%.2f", priceInDollarsAsString.doubleValue)
-			let priceInDollarsAsDouble = calculator.convertStringToDouble(numberAsString: priceInDollarsAsStringWithCommaDecimalSeparator)
-			
-			print("priceInDollarsAsString: \(priceInDollarsAsString)")
-			print("priceInDollarsAsStringWithCommaDecimalSeparator: \(priceInDollarsAsStringWithCommaDecimalSeparator)")
-			print("priceInDollarsAsDouble: \(priceInDollarsAsDouble)")
-			
+			let priceInDollarsAsDouble = calculator.convertStringToDouble(numberAsString: priceInDollarsAsString)
+
 			product.productName           = productNameTextField.text
 			product.image                 = productOrPlaceholderImage.image
 			product.state                 = state
@@ -439,12 +434,7 @@ extension ProdutoViewController: UIImagePickerControllerDelegate, UINavigationCo
 			self.getImage(fromSourceType: .photoLibrary)
 		}
 		alertControllerAsActionSheet.addAction(photoLibraryAction)
-		
-		let savedPhotosAlbumAction = UIAlertAction(title: "Álbum de fotos", style: .default) { (action: UIAlertAction) in
-			self.getImage(fromSourceType: .savedPhotosAlbum)
-		}
-		alertControllerAsActionSheet.addAction(savedPhotosAlbumAction)
-		
+	
 		let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
 		alertControllerAsActionSheet.addAction(cancelAction)
 		
