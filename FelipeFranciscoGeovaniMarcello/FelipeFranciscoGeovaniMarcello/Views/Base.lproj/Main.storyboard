@@ -313,7 +313,7 @@
                     <connections>
                         <segue destination="38o-fQ-PaW" kind="relationship" relationship="viewControllers" id="d8V-9j-Prm"/>
                         <segue destination="lB5-0e-Ovq" kind="relationship" relationship="viewControllers" id="u7I-8r-1Ob"/>
-                        <segue destination="ucc-kU-KEA" kind="relationship" relationship="viewControllers" id="gCg-Pg-eU1"/>
+                        <segue destination="VhW-dK-XHw" kind="relationship" relationship="viewControllers" id="gCg-Pg-eU1"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HaV-68-TNP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -385,7 +385,7 @@
             </objects>
             <point key="canvasLocation" x="5595.652173913044" y="45.535714285714285"/>
         </scene>
-        <!--Total da Compra-->
+        <!--Totais-->
         <scene sceneID="icx-Y0-NWe">
             <objects>
                 <viewController id="ucc-kU-KEA" customClass="TotalViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
@@ -587,7 +587,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QjH-78-j5U"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Total da Compra" image="total" id="AxF-UU-5bP"/>
+                    <navigationItem key="navigationItem" title="Totais" id="ZbP-q5-6t8"/>
                     <connections>
                         <outlet property="americanDollarExchangeRate" destination="MhK-2U-Vqw" id="Oqh-bD-6WS"/>
                         <outlet property="iofTitleLabel" destination="47S-IR-Joo" id="w53-zB-9lz"/>
@@ -601,7 +601,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O8R-Ey-5xy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6850.7246376811599" y="45.535714285714285"/>
+            <point key="canvasLocation" x="7760.8695652173919" y="45.535714285714285"/>
         </scene>
         <!--Ajustes-->
         <scene sceneID="b0T-6u-k3Q">
@@ -621,6 +621,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ko8-yA-216" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4685.507246376812" y="45.535714285714285"/>
+        </scene>
+        <!--Total da Compra-->
+        <scene sceneID="XYm-jt-2CP">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VhW-dK-XHw" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Total da Compra" image="total" id="AxF-UU-5bP"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="en0-98-eTc">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ucc-kU-KEA" kind="relationship" relationship="rootViewController" id="eRY-UC-hg3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nYf-88-yZj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6850.7246376811599" y="45.535714285714285"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

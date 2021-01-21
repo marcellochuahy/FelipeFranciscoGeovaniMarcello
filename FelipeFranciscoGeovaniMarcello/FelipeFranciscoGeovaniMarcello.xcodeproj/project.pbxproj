@@ -68,7 +68,7 @@
 		5FA2A87A259E2B6800320251 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		5FA2A87C259E2F0B00320251 /* SettingsCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellModel.swift; sourceTree = "<group>"; };
 		5FA2A88025A9CAF000320251 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		5FA5F2DC258C03A40011637A /* ComprasUSA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComprasUSA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FA5F2DC258C03A40011637A /* Compras USA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Compras USA.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FA5F2DF258C03A40011637A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5FA5F2E1258C03A40011637A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5FA5F2E6258C03A40011637A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 		5FA5F2DD258C03A40011637A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5FA5F2DC258C03A40011637A /* ComprasUSA.app */,
+				5FA5F2DC258C03A40011637A /* Compras USA.app */,
 				5F3410FE258C13790049E7D3 /* ComprasUSATests.xctest */,
 			);
 			name = Products;
@@ -289,7 +289,7 @@
 			);
 			name = FelipeFranciscoGeovaniMarcello;
 			productName = FelipeFranciscoGeovaniMarcello;
-			productReference = 5FA5F2DC258C03A40011637A /* ComprasUSA.app */;
+			productReference = 5FA5F2DC258C03A40011637A /* Compras USA.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -584,7 +584,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = codes.applause.FelipeFranciscoGeovaniMarcello;
-				PRODUCT_NAME = ComprasUSA;
+				PRODUCT_NAME = "Compras USA";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -602,7 +602,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = codes.applause.FelipeFranciscoGeovaniMarcello;
-				PRODUCT_NAME = ComprasUSA;
+				PRODUCT_NAME = "Compras USA";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
