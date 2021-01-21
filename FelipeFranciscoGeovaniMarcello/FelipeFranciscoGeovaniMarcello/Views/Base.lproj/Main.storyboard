@@ -507,8 +507,8 @@
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Produtos + Impostos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGp-nC-nZo">
-                                                <rect key="frame" x="24" y="103.5" width="134.5" height="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Compras c/ impostos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGp-nC-nZo">
+                                                <rect key="frame" x="24" y="103.5" width="137.5" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -525,7 +525,7 @@
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IOF (em compras com cartào)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47S-IR-Joo">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IOF (em compras com cartão)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47S-IR-Joo">
                                                 <rect key="frame" x="24" y="128.5" width="193" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -590,6 +590,7 @@
                     <tabBarItem key="tabBarItem" title="Total da Compra" image="total" id="AxF-UU-5bP"/>
                     <connections>
                         <outlet property="americanDollarExchangeRate" destination="MhK-2U-Vqw" id="Oqh-bD-6WS"/>
+                        <outlet property="iofTitleLabel" destination="47S-IR-Joo" id="w53-zB-9lz"/>
                         <outlet property="totalAmountInDollarLabel" destination="TKA-l2-xAe" id="1dF-6G-UO1"/>
                         <outlet property="totalAmountInRealLabel" destination="D8F-GS-cpP" id="euL-Hw-pCZ"/>
                         <outlet property="totalAmountOfIofInRealLabel" destination="JFt-dR-a5X" id="N9W-Ne-btU"/>

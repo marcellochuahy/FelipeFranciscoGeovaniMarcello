@@ -59,6 +59,7 @@ class Calculator {
 	func convertDoubleToString(double: Double, withLocale customLocale: CustomLocale?) -> String {
 		numberFormatter.locale = customLocale?.locale
 		numberFormatter.minimumFractionDigits = 2
+		numberFormatter.maximumFractionDigits = 2
 		numberFormatter.numberStyle = .decimal
 		return numberFormatter.string(from: NSNumber(value:double)) ?? "0,00"
 	}

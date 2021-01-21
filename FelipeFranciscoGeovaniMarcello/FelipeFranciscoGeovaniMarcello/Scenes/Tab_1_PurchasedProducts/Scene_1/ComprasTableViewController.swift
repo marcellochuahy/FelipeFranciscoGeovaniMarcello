@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 
-
 // ⚠️ TODO
 protocol ProductProtocol: class {
 	var productName: String { get set }
