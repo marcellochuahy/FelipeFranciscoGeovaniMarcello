@@ -38,10 +38,10 @@ class ComprasTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		title = "Compras"
+		UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "customBlue") as Any]
 		configureNavigationItem()
 		configureSearchController()
-		configureTableView()
-		//fetchProducts()
+		configureTableView()	
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +55,8 @@ class ComprasTableViewController: UITableViewController {
 	// MARK: - Methods
 	
 	func configureNavigationItem() {
-		self.navigationItem.rightBarButtonItem = self.editButtonItem
+		navigationItem.rightBarButtonItem = self.editButtonItem
+		navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "customBlue")
 	}
 	
 	func configureSearchController() {

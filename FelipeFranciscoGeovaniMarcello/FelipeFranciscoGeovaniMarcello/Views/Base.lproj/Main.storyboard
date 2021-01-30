@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,13 +11,13 @@
         <!--Compras Table View Controller-->
         <scene sceneID="D80-54-r07">
             <objects>
-                <tableViewController id="Bjs-Ab-ycE" customClass="ComprasTableViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Bjs-Ab-ycE" customClass="ComprasTableViewController" customModule="Compras_USA" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ufv-O4-tDj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="productTableViewCell" rowHeight="124" id="GHb-bL-2NR" customClass="ProductTableViewCell" customModule="ComprasUSA" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="productTableViewCell" rowHeight="124" id="GHb-bL-2NR" customClass="ProductTableViewCell" customModule="Compras_USA" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="124"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GHb-bL-2NR" id="UG8-Uw-gN5">
@@ -104,6 +105,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="bAM-jJ-Fcz">
                         <barButtonItem key="leftBarButtonItem" title="Adcionar" id="6fp-55-WHZ">
+                            <color key="tintColor" name="customBlue"/>
                             <connections>
                                 <segue destination="KWi-VU-JTR" kind="show" identifier="addProductSegue" id="IIZ-cZ-Yry"/>
                             </connections>
@@ -117,7 +119,7 @@
         <!--Produto View Controller-->
         <scene sceneID="yZH-H5-7On">
             <objects>
-                <viewController id="KWi-VU-JTR" customClass="ProdutoViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="KWi-VU-JTR" customClass="ProdutoViewController" customModule="Compras_USA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="01S-q4-iZd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -309,6 +311,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="unselectedItemTintColor">
+                                <color key="value" white="1" alpha="0.40117963576158938" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
                         <segue destination="38o-fQ-PaW" kind="relationship" relationship="viewControllers" id="d8V-9j-Prm"/>
@@ -323,12 +333,12 @@
         <!--Ajustes-->
         <scene sceneID="jNQ-rd-cti">
             <objects>
-                <tableViewController id="9V6-Jv-7cO" customClass="SettingsTableViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="9V6-Jv-7cO" customClass="SettingsTableViewController" customModule="Compras_USA" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="sgV-dX-odR">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsTableViewCell" id="eeW-hD-CE1" customClass="SettingsTableViewCell" customModule="ComprasUSA" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsTableViewCell" id="eeW-hD-CE1" customClass="SettingsTableViewCell" customModule="Compras_USA" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eeW-hD-CE1" id="V9f-J7-7oY">
@@ -388,7 +398,7 @@
         <!--Totais-->
         <scene sceneID="icx-Y0-NWe">
             <objects>
-                <viewController id="ucc-kU-KEA" customClass="TotalViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ucc-kU-KEA" customClass="TotalViewController" customModule="Compras_USA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vEj-Nc-vFo">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -610,7 +620,7 @@
                     <tabBarItem key="tabBarItem" title="Ajustes" image="settings" id="epT-fH-Zx0"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="o1S-XL-Z2s">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -643,7 +653,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eWN-ep-8Sl"/>
+        <segue reference="u7I-8r-1Ob"/>
         <segue reference="YCu-uW-G7S"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -654,5 +664,8 @@
         <image name="purchasedProducts" width="23" height="23"/>
         <image name="settings" width="23" height="23"/>
         <image name="total" width="23" height="23"/>
+        <namedColor name="customBlue">
+            <color red="0.17254901960784313" green="0.25490196078431371" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

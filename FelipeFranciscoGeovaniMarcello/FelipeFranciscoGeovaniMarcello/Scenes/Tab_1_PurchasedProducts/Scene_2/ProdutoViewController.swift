@@ -73,6 +73,8 @@ class ProdutoViewController: UIViewController {
 
 		loadProductDataIfProductIsNotNil()
 		
+		UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+		
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

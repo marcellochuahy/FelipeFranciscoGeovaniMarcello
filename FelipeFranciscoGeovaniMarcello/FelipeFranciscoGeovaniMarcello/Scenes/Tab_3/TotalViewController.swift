@@ -45,6 +45,7 @@ class TotalViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
